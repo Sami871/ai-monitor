@@ -1,0 +1,23 @@
+import Sidebar from "@/components/web/Sidebar";
+import TopHeader from "@/components/web/TopHeader";
+
+export default function WebLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="bg-default min-h-screen w-full flex ">
+      <div className="flex h-screen w-full overflow-hidden relative">
+        {/* Sidebar */}
+        <Sidebar />
+
+        {/* Right side: header + page content */}
+        <div className="flex flex-col flex-1 min-w-0 overflow-hidden bg-default relative">
+          <TopHeader />
+
+          {/* Page content */}
+          <main className="flex-1 overflow-y-auto bg-default p-6 flex justify-center">
+            <div className="w-full h-full">{children}</div>
+          </main>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -10,17 +10,17 @@
 
   /* Bg colors */
   --color-bg-default: #0B0F14;
-  --color-bg-primary: #3B82F6;
+  --color-bg-blue: #3B82F6;
   --color-bg-secondary: #1F2937;
 
   /* Text colors */
   --color-text-primary: #E5E7EB;
   --color-text-secondary: #9CA3AF;
-
+  --color-text-blue: #3B82F6;
   /* border colors */
   --color-border-default: #1F2937;
   --color-border-primary: #FFFFFF;
-
+  
   /* Border radius */
   --radius: 0.625rem;
 }
@@ -54,8 +54,8 @@
   background-color: var(--color-bg-default) !important;
 }
 
-.bg-primary {
-  background-color: var(--color-bg-primary) !important;
+.bg-blue {
+  background-color: var(--color-bg-blue) !important;
 }
 
 .bg-secondary {
@@ -70,10 +70,14 @@
   color: var(--color-text-secondary) !important;
 }
 
-/* Rounded radius */
-.rounded {
-  border-radius: var(--radius);
+.text-blue {
+  color: var(--color-text-blue) !important;
 }
+
+/* Rounded radius */
+/* .rounded {
+  border-radius: var(--radius);
+} */
 
 /* border classes */
 .border-default {
