@@ -13,20 +13,20 @@ export default function RecentActivity({
   return (
     <div
       className={cn(
-        "bg-secondary rounded-xl p-5 flex flex-col gap-3",
+        "bg-secondary rounded-xl p-4 flex flex-col",
         className,
       )}
     >
-      <h3 className="text-white text-base font-semibold">Recent Activity</h3>
+      <h3 className="text-white text-lg font-medium mb-5">Recent Activity</h3>
 
-      <div className="flex flex-col divide-y divide-[#2a2d35]">
+      <div className="flex flex-col gap-3">
         {items.map((item) => (
           <div
             key={item.id}
-            className="flex items-start justify-between gap-4 py-3 first:pt-0 last:pb-0"
+            className="flex items-start justify-between gap-4 first:pt-0 last:pb-0"
           >
-            <div className="flex flex-col gap-0.5 min-w-0">
-              <span className="text-white text-sm font-semibold truncate">
+            <div className="flex flex-col min-w-0">
+              <span className="text-primary text-sm font-medium truncate">
                 {item.title}
               </span>
               <span className="text-secondary text-xs leading-relaxed truncate">

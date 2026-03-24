@@ -32,7 +32,8 @@ export default function DonutChart() {
               backgroundColor: DONUT_SEGMENTS.map((s) => s.color),
               borderColor: "#252830",
               borderWidth: 2,
-              hoverOffset: 4,
+              hoverOffset: 6, // slightly bigger hover
+              spacing: 2, // 👈 adds spacing between arcs (clean look)
             },
           ],
         },
@@ -73,9 +74,9 @@ export default function DonutChart() {
   }, []);
 
   return (
-    <div className="bg-secondary rounded-xl p-5 border border-[#2a6ef5]/40 flex flex-col h-full min-h-[380px]">
-      <div className="relative flex-1 min-h-0 flex items-center justify-center">
-        <div className="w-full h-full">
+    <div className="bg-secondary rounded-xl py-4 px-auto border border-default flex justify-center items-center h-[273px]">
+      <div className="relative min-h-0 flex items-center justify-center">
+        <div className="w-full h-full max-h-[240px]">
           <canvas ref={canvasRef} className="w-full h-full" />
         </div>
 
@@ -85,20 +86,24 @@ export default function DonutChart() {
       </div>
 
       {/* Legend */}
-      <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3">
+      <div className="mt-6 flex flex-col gap-x-2 gap-y-3 overflow-hidden">
         {DONUT_SEGMENTS.map((segment) => (
-          <div key={segment.label} className="flex items-center gap-2">
+          <div
+            key={segment.label}
+            className="flex items-center gap-2 min-w-[120px]"
+          >
             <div
               className="w-2.5 h-2.5 rounded-full"
               style={{ backgroundColor: segment.color }}
             />
-            <div className="flex flex-col">
-              <span className="text-[#8b909a] text-[11px] leading-tight">
+
+            <div className="flex items-center gap-1">
+              <span className="text-secondary text-xs">
                 {segment.label}
               </span>
-              <span className="text-white text-[13px] font-semibold">
+              {/* <span className="text-white text-[13px] font-semibold">
                 {segment.value}%
-              </span>
+              </span> */}
             </div>
           </div>
         ))}

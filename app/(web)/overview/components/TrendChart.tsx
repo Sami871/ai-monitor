@@ -96,13 +96,30 @@ export default function TrendChart({ data = TREND_DATA }: TrendChartProps) {
           },
           scales: {
             x: {
-              grid: { color: "rgba(255,255,255,0.04)" },
+              grid: { display: false},
               ticks: {
                 color: "#8b909a",
                 font: { size: 11 },
                 maxRotation: 0,
               },
               border: { color: "rgba(255,255,255,0.06)" },
+            },
+
+            y: {
+              min: 0,
+              max: 160,
+              ticks: {
+                stepSize: 40,
+                color: "#8b909a",
+                font: { size: 11 },
+                padding: 8,
+              },
+              grid: {
+                color: "rgba(255,255,255,0.04)",
+              },
+              border: {
+                display: false, // 👈 THIS replaces drawBorder
+              },
             },
           },
         },
@@ -119,9 +136,9 @@ export default function TrendChart({ data = TREND_DATA }: TrendChartProps) {
   }, [data]);
 
   return (
-    <div className="bg-secondary rounded-xl p-5 border border-[#2a6ef5]/40">
+    <div className="bg-secondary rounded-xl py-6 px-4 border border-default h-[418px]">
       {/* Header */}
-      <div className="mb-4">
+      <div className="mb-6">
         <h3 className="text-primary text-lg font-medium">
           Detection Trends (24h)
         </h3>
@@ -131,7 +148,7 @@ export default function TrendChart({ data = TREND_DATA }: TrendChartProps) {
       </div>
 
       {/* Canvas */}
-      <div className="relative h-[220px] w-full">
+      <div className="relative h-[290px] w-full">
         <canvas ref={canvasRef} />
       </div>
     </div>

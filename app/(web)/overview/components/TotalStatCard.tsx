@@ -24,12 +24,12 @@ export default function DashboardStatCard({
   return (
     <div
       className={cn(
-        "bg-secondary rounded-xl p-4 flex flex-col gap-2",
+        "bg-secondary rounded-xl p-4 flex flex-col gap-2 max-h-[70px] h-full",
         className,
       )}
     >
       <div className="flex items-start justify-between gap-2">
-        <span className="text-secondaryext-xs font-medium leading-tight">
+        <span className="text-xs font-medium text-secondary">
           {stat.title}
         </span>
         <Icon
@@ -38,7 +38,7 @@ export default function DashboardStatCard({
         />
       </div>
 
-      <p className="text-white text-2xl font-bold leading-none tracking-tight">
+      <p className="text-white text-base font-medium">
         {stat.count.toLocaleString()}
       </p>
 
