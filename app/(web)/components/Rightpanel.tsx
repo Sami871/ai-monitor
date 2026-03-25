@@ -1,4 +1,3 @@
-import { Users, Car, PawPrint, Bird } from "lucide-react";
 import StatCard from "./Statcard";
 import CameraStatusPanel from "./Camerastatuspanel";
 import ObjectDistributionPanel from "./Objctdistributionpanel";
@@ -28,26 +27,10 @@ export default function RightPanel({
     <div className="flex flex-col gap-6 w-full">
       {/* Stat Cards Grid */}
       <div className="grid grid-cols-2 gap-6">
-        <StatCard
-          value={stats.humans}
-          label="Humans"
-          icon={<Users className="w-7 h-7 text-[#22c55e]" strokeWidth={1.5} />}
-        />
-        <StatCard
-          value={stats.vehicles}
-          label="Vehicle"
-          icon={<Car className="w-7 h-7 text-[#f59e0b]" strokeWidth={1.5} />}
-        />
-        <StatCard
-          value={stats.animals}
-          label="Animals"
-          icon={<PawPrint className="w-7 h-7 text-[#ef4444]" strokeWidth={1.5} />}
-        />
-        <StatCard
-          value={stats.birds}
-          label="Birds"
-          icon={<Bird className="w-7 h-7 text-[#a855f7]" strokeWidth={1.5} />}
-        />
+        <StatCard value={stats.humans}   label="Humans"  icon={<img src="/icons/human.svg"  alt="Humans"  width={38} height={38} />} />
+        <StatCard value={stats.vehicles} label="Vehicle" icon={<img src="/icons/car.svg"    alt="Vehicle" width={38} height={38} />} />
+        <StatCard value={stats.animals}  label="Animals" icon={<img src="/icons/animal.svg" alt="Animals" width={38} height={38} />} />
+        <StatCard value={stats.birds}    label="Birds"   icon={<img src="/icons/bird.svg"   alt="Birds"   width={38} height={38} />} />
       </div>
 
       {/* Camera Status */}

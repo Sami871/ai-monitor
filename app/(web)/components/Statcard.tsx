@@ -21,7 +21,9 @@ export default function StatCard({
         className
       )}
     >
-      <div className="mb-1">{icon}</div>
+      <div className="mb-1 flex items-center justify-center">
+        {icon}
+      </div>
       <span className="text-white text-3xl font-medium leading-tight">{value}</span>
       <span className="text-secondary text-sm">{label}</span>
     </div>

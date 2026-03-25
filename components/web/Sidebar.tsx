@@ -12,8 +12,8 @@ import {
   LogOut,
 } from "lucide-react";
 import Logo from "@/assets/image/ai-logo.png";
-import user from "@/assets/icon/human.svg";
 import { cn } from "@/lib/utils";
+import { useProfileStore } from "@/store/useProfileStore";
 
 const NAV_ITEMS = [
   { id: "live", label: "Live Monitoring", icon: Monitor, href: "/" },
@@ -39,6 +39,7 @@ interface SidebarProps {
 
 export default function Sidebar({ onLogout }: SidebarProps) {
   const pathname = usePathname();
+  const { avatarUrl, name, email } = useProfileStore();
 
   return (
     <aside className="w-[240px] min-w-[240px] bg-secondary flex flex-col h-screen border-r border-default sticky top-0">
@@ -88,15 +89,25 @@ export default function Sidebar({ onLogout }: SidebarProps) {
         </div>
         {/* profile */}
         <div className="flex items-center gap-3 px-2.5 py-3">
-          <Image
-            src={user}
-            alt="AI Monitor Logo"
-            className="rounded-full w-10 h-10"
-            priority
-          />
-          <p className="flex flex-col">
-            <span className="text-primary text-sm font-medium">Admin</span>
-            <span className="text-secondary text-xs">admin@gmail.com</span>
+          {avatarUrl ? (
+            <img
+              src={avatarUrl}
+              alt="Profile"
+              className="w-10 h-10 rounded-full object-cover shrink-0"
+            />
+          ) : (
+            <Image
+              src={Logo}
+              alt="AI Monitor Logo"
+              className="w-10 h-10 rounded-full shrink-0"
+              priority
+            />
+          )}
+          <p className="flex flex-col min-w-0">
+            <span className="text-primary text-sm font-medium truncate">
+              {name}
+            </span>
+            <span className="text-secondary text-xs truncate">{email}</span>
           </p>
         </div>
       </div>

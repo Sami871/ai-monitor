@@ -1,4 +1,4 @@
-import AnalysisStatCard from "@/components/web/AnalysisCard";
+import StatCard from "@/components/web/StatCard";
 import DetailedReport from "../components/DetailedReport";
 import SourceMetadataPanel from "../components/SourcePanel";
 import { DUMMY_ANALYSIS_RESULT } from "@/data/analysis-data";
@@ -11,7 +11,16 @@ export default function VideoAnalysisPage() {
       {/* Stat Cards */}
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
-          <AnalysisStatCard key={stat.id} data={stat} />
+          <StatCard
+            key={stat.id}
+            title={stat.title}
+            count={stat.count}
+            icon={stat.icon}
+            iconColor={stat.iconColor}
+            variant="analysis"
+            confidence={stat.confidence}
+            confidenceRange={stat.confidenceRange}
+          />
         ))}
       </div>
 

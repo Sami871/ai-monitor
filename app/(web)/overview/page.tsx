@@ -1,29 +1,46 @@
-import AnalysisStatCard from "@/components/web/AnalysisCard";
+import StatCard from "@/components/web/StatCard";
 import TrendChart from "./components/TrendChart";
 import RecentActivity from "./components/RecentActivity";
 import DonutChart from "./components/DonutChart";
-import DashboardStatCard from "./components/TotalStatCard";
 import {
+  DASHBOARD_STATS,
   COMPACT_STATS,
   RECENT_ACTIVITY,
 } from "@/data/dashboard-data";
-import { DUMMY_ANALYSIS_RESULT } from "@/data/analysis-data";
 
 export default function DashboardPage() {
-  const { stats } = DUMMY_ANALYSIS_RESULT;
   return (
     <div className="flex flex-col gap-4">
       {/* ── Row 1: Stat Cards ── */}
-      <div className="grid grid-cols-5 gap-4 w-full">
-        {/* First 4 equal cards */}
-        {stats.map((stat) => (
-          <AnalysisStatCard key={stat.id} data={stat} />
+      <div className="grid grid-cols-4 gap-4 w-full">
+        {/* First 3 equal cards */}
+        {DASHBOARD_STATS.map((stat) => (
+          <StatCard
+            key={stat.id}
+            title={stat.title}
+            count={stat.count}
+            icon={stat.icon}
+            iconColor={stat.iconColor}
+            variant="dashboard"
+            change={stat.change}
+            changeType={stat.changeType}
+          />
         ))}
 
         {/* Last column (stacked 2 cards) */}
         <div className="flex flex-col gap-4">
           {COMPACT_STATS.map((stat) => (
-            <DashboardStatCard key={stat.id} stat={stat} className="flex-1" />
+            <StatCard
+              key={stat.id}
+              title={stat.title}
+              count={stat.count}
+              icon={stat.icon}
+              iconColor={stat.iconColor}
+              variant="dashboard"
+              size="compact"
+              change={stat.change}
+              changeType={stat.changeType}
+            />
           ))}
         </div>
       </div>
