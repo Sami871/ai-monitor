@@ -1,12 +1,23 @@
+"use client";
+
 import Sidebar from "@/components/web/Sidebar";
 import TopHeader from "@/components/web/TopHeader";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
 
 export default function WebLayout({ children }: { children: React.ReactNode }) {
+  const { logout } = useAuthStore();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
+  };
   return (
     <div className="bg-default min-h-screen w-full flex ">
       <div className="flex h-screen w-full overflow-hidden relative">
         {/* Sidebar */}
-        <Sidebar />
+        <Sidebar onLogout={handleLogout} />
 
         {/* Right side: header + page content */}
         <div className="flex flex-col flex-1 min-w-0 overflow-hidden bg-default relative">

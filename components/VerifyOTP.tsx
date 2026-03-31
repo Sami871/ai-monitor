@@ -1,10 +1,60 @@
 "use client";
 
-import { useVerification } from "@/hooks/useVerification";
+import { useState, useEffect, useCallback } from "react";
+import { UseFormRegister, FieldErrors, UseFormSetValue } from "react-hook-form";
+import { OtpInput } from "@/lib/validations/auth.schema";
+import { useAuthStore } from "@/store/useAuthStore";
 
-const VerifyOTP = () => {
-  const { otp, timer, error, handleOtpChange, handleSubmit, handleResend } =
-    useVerification();
+interface VerifyOTPProps {
+  register: UseFormRegister<OtpInput>;
+  handleSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  errors: FieldErrors<OtpInput>;
+  isSubmitting: boolean;
+  setValue: UseFormSetValue<OtpInput>;
+}
+
+const VerifyOTP = ({ handleSubmit, errors, isSubmitting, setValue }: VerifyOTPProps) => {
+  const [otp, setOtp] = useState<string[]>(["", "", "", ""]);
+  const [timer, setTimer] = useState<number>(60);
+  const [resendError, setResendError] = useState<string | null>(null);
+  const { forgotPassword, pendingEmail } = useAuthStore();
+
+  useEffect(() => {
+    if (timer === 0) return;
+    const interval = setInterval(() => setTimer((t) => t - 1), 1000);
+    return () => clearInterval(interval);
+  }, [timer]);
+
+  const handleOtpChange = useCallback(
+    (index: number, value: string) => {
+      if (!/^\d*$/.test(value)) return;
+      const updated = [...otp];
+      updated[index] = value.slice(-1);
+      setOtp(updated);
+
+      // Sync manually with react-hook-form state
+      setValue("otp", updated.join(""), { shouldValidate: true });
+
+      if (value && index < 3) {
+        const next = document.getElementById(`otp-${index + 1}`);
+        next?.focus();
+      }
+    },
+    [otp, setValue],
+  );
+
+  const handleResend = async () => {
+    if (!pendingEmail) return;
+    setResendError(null);
+    try {
+      await forgotPassword({ email: pendingEmail });
+      setTimer(60);
+      setOtp(["", "", "", ""]);
+      setValue("otp", "");
+    } catch {
+      setResendError("Failed to resend OTP.");
+    }
+  };
 
   return (
     <div className="space-y-8 w-full">
@@ -19,10 +69,10 @@ const VerifyOTP = () => {
       </div>
 
       <form className="space-y-6" onSubmit={handleSubmit}>
-        {/* OTP Inputs */}
         <div className="flex justify-center gap-3">
           {otp.map((value: string, i: number) => (
             <input
+              id={`otp-${i}`}
               key={i}
               type="text"
               maxLength={1}
@@ -41,21 +91,27 @@ const VerifyOTP = () => {
           ))}
         </div>
 
-        {error && <p className="text-sm text-primary text-center">{error}</p>}
+        {(errors.otp || resendError) && (
+          <p className="text-sm text-red-500 text-center">
+            {errors.otp?.message || resendError}
+          </p>
+        )}
 
         <button
           type="submit"
+          disabled={isSubmitting}
           className="
-            w-full h-[52px]
+            w-full h-13
             bg-blue
             text-white
             font-semibold
             p-2.5
             rounded-xl
             transition
+            disabled:opacity-50 disabled:cursor-not-allowed
           "
         >
-          Verify OTP
+          {isSubmitting ? "Verifying..." : "Verify OTP"}
         </button>
       </form>
 

@@ -1,15 +1,17 @@
+"use client";
+
 import PasswordInput from "@/components/PasswordInput";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { ResetPasswordInput } from "@/lib/validations/auth.schema";
 
-const SetPassword = () => {
-  //   const {
-  //     password,
-  //     setPassword,
-  //     confirmPassword,
-  //     setConfirmPassword,
-  //     errors,
-  //     handleSubmit,
-  //   } = useSetPassword();
+interface SetPasswordProps {
+  register: UseFormRegister<ResetPasswordInput>;
+  handleSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  errors: FieldErrors<ResetPasswordInput>;
+  isSubmitting: boolean;
+}
 
+const SetPassword = ({ register, handleSubmit, errors, isSubmitting }: SetPasswordProps) => {
   return (
     <div className="space-y-10 w-full">
       <div className="flex flex-col gap-5">
@@ -22,36 +24,35 @@ const SetPassword = () => {
         </p>
       </div>
 
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
         <PasswordInput
+          {...register("password")}
           label="Password"
           placeholder="Enter your new password"
-          //   value={password}
-          //   onChange={(e) => setPassword(e.target.value)}
-          //   error={errors?.password ? errors.password[0] : null}
         />
+        {errors.password && (
+          <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
+        )}
 
-        {/* {errors?.password && (
-          <p className="text-sm text-primary mt-1">{errors.password[0]}</p>
-        )} */}
-
-        <PasswordInput
-          label="Confirm Password"
-          placeholder="Re-enter your password"
-          //   value={confirmPassword}
-          //   onChange={(e) => setConfirmPassword(e.target.value)}
-          //   error={errors?.confirmPassword ? errors.confirmPassword[0] : null}
-        />
-
-        {/* {errors?.confirmPassword && (
-          <p className="text-sm text-primary mt-1">{errors.confirmPassword[0]}</p>
-        )} */}
+        <div className="mt-4">
+          <PasswordInput
+            {...register("confirmPassword")}
+            label="Confirm Password"
+            placeholder="Re-enter your password"
+          />
+          {errors.confirmPassword && (
+            <p className="text-sm text-red-500 mt-1">
+              {errors.confirmPassword.message}
+            </p>
+          )}
+        </div>
 
         <button
           type="submit"
-          className="w-full bg-blue text-white h-[52px] p-2.5 rounded-xl transition"
+          disabled={isSubmitting}
+          className="w-full bg-blue text-white h-13 p-2.5 rounded-xl mt-6 transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Reset Password
+          {isSubmitting ? "Resetting..." : "Reset Password"}
         </button>
       </form>
     </div>
@@ -59,3 +60,4 @@ const SetPassword = () => {
 };
 
 export default SetPassword;
+

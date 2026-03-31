@@ -1,4 +1,5 @@
 import type { UploadStep } from "@/types/upload";
+import Image from "next/image";
 
 interface ProgressLoaderProps {
   step: UploadStep;
@@ -34,17 +35,7 @@ export default function ProgressLoader({
     <div className="w-full max-w-[860px] mx-auto mt-10 rounded-2xl border-2 border-dashed border-default flex flex-col items-center justify-center gap-8 p-12 min-h-[420px]">
       {/* Video file icon */}
       <div className="shrink-0">
-        <svg
-          className="w-20 h-20 text-secondary"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={1.2}
-          viewBox="0 0 24 24"
-        >
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-          <polyline points="14 2 14 8 20 8" />
-          <path d="M10 11l5 3-5 3v-6z" />
-        </svg>
+        <Image src="/icons/video-gray.svg" alt="Video" width={120} height={120} />
       </div>
 
       {/* Progress section */}

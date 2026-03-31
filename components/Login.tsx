@@ -3,14 +3,18 @@
 import Link from "next/link";
 import PasswordInput from "@/components/PasswordInput";
 import CheckBox from "@/components/CheckBox";
-// import { useLogin } from "./core/useLogin";
-// import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { LoginInput } from "@/lib/validations/auth.schema";
 
-const Login = () => {
-  //   const { email, password, error, setEmail, setPassword, handleSubmit } =
-  //     useLogin();
+interface LoginProps {
+  register: UseFormRegister<LoginInput>;
+  handleSubmit: (e?: React.BaseSyntheticEvent) => void;
+  errors: FieldErrors<LoginInput>;
+  isSubmitting: boolean;
+}
 
+const Login = ({ register, handleSubmit, errors, isSubmitting }: LoginProps) => {
   const [remember, setRemember] = useState<boolean>(false);
 
   return (
@@ -25,44 +29,33 @@ const Login = () => {
         </p>
       </div>
 
-      <form className="space-y-4">
+       <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
           <label className="block text-primary text-sm">Email</label>
-
           <input
+            {...register("email")}
             type="email"
             placeholder="Enter your Email"
-            // value={email}
-            // onChange={(e) => setEmail(e.target.value)}
-            className="
-              w-full h-13 mt-3
-              border border-default rounded-xl
-              px-3 text-sm
-              outline-none
-              focus:ring focus-ring-primary
-            "
+            className="w-full h-13 mt-3 border border-default rounded-xl px-3 text-sm outline-none focus:ring focus-ring-primary"
           />
-
-          {/* {error?.email && (
-            <p className="text-sm text-primary mt-1">{error.email[0]}</p>
-          )} */}
+          {errors.email && (
+            <p className="text-sm text-red-400 mt-1">{errors.email.message}</p>
+          )}
         </div>
 
         <PasswordInput
+          {...register("password")}          
           placeholder="Enter Your Password"
           label="Password"
-          //   value={password}
-          //   onChange={(e) => setPassword(e.target.value)}
         />
-
-        {/* {error?.password && (
-          <p className="text-sm text-primary mt-1">{error.password[0]}</p>
-        )} */}
+        {errors.password && (
+          <p className="text-sm text-red-400 mt-1">{errors.password.message}</p>
+        )}
 
         <div className="flex items-center justify-between text-sm">
           <CheckBox
             label="Remember me"
-            checked={remember}
+              checked={remember}
             onChange={setRemember}
           />
 
@@ -71,15 +64,10 @@ const Login = () => {
           </Link>
         </div>
 
-        {/* {error?.form && (
-          <p className="text-sm text-primary font-medium">{error.form[0]}</p>
-        )} */}
-
-        <button
-          type="submit"
-          className="w-full h-13 bg-blue text-white p-2.5 rounded-xl transition"
-        >
-          Login
+        {/* rest of UI exactly as-is */}
+        <button type="submit" disabled={isSubmitting}
+          className="w-full h-13 bg-blue text-white p-2.5 rounded-xl transition">
+          {isSubmitting ? "Logging in..." : "Login"}
         </button>
       </form>
     </div>
