@@ -22,6 +22,7 @@ const NAV_ITEMS = [
     icon: "/icons/reports.svg",
     href: "/reports",
   },
+  { id: "configuration", label: "System Configuration", icon: "/icons/configuration.svg", href: "/configuration" },
   { id: "settings", label: "Settings", icon: "/icons/settings.svg", href: "/settings" },
 ];
 
