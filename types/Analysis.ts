@@ -1,4 +1,4 @@
-export type DetectionType = "Human" | "Vehicle" | "Animal" | "Bird";
+export type DetectionType = "Human" | "Vehicle" | "Animal" | "Bird" | string;
 export type ConfidenceLevel = "High" | "Medium" | "Low";
 
 export interface StatCardData {
@@ -6,9 +6,9 @@ export interface StatCardData {
   title: string;
   count: number;
   confidence: ConfidenceLevel;
-  confidenceRange: string; // e.g. ">90%"
+  confidenceRange: string;
   icon: "human" | "vehicle" | "animal" | "bird";
-  iconColor: string; // tailwind text color class
+  iconColor: string;
 }
 
 export interface DetectionRow {
@@ -25,6 +25,7 @@ export interface SourceMetadata {
   duration: string;
   uploadDate: string;
   thumbnailUrl?: string;
+  videoUrl?: string;
 }
 
 export interface AnalysisResult {

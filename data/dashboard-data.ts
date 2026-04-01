@@ -131,9 +131,9 @@ export const RECENT_ACTIVITY: ActivityItem[] = [
 // ── Donut Chart ──────────────────────────────────────────────
 export const DONUT_SEGMENTS: DonutSegment[] = [
   { label: "Humans", value: 40, color: "#22c55e" },
-  { label: "Vehicle", value: 30, color: "#a855f7" },
-  { label: "Animals", value: 20, color: "#f59e0b" },
-  { label: "Birds", value: 10, color: "#ef4444" },
+  { label: "Vehicle", value: 30, color: "#f59e0b" },
+  { label: "Animals", value: 20, color: "#ef4444" },
+  { label: "Birds", value: 10, color: "#a855f7" },
 ];
 
 export const DONUT_TOTAL = 100;

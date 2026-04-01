@@ -5,7 +5,6 @@ import { DONUT_SEGMENTS, DONUT_TOTAL } from "@/data/dashboard-data";
 
 export default function DonutChart() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const chartRef = useRef<any>(null);
 
   useEffect(() => {
@@ -22,25 +21,29 @@ export default function DonutChart() {
         chartRef.current.destroy();
       }
 
+      const maxVal = Math.max(...DONUT_SEGMENTS.map((s) => s.value));
+
       chart = new Chart(ctx, {
-        type: "doughnut",
+        type: "polarArea",
         data: {
           labels: DONUT_SEGMENTS.map((s) => s.label),
           datasets: [
             {
               data: DONUT_SEGMENTS.map((s) => s.value),
               backgroundColor: DONUT_SEGMENTS.map((s) => s.color),
-              borderColor: "#252830",
-              borderWidth: 2,
-              hoverOffset: 6, // slightly bigger hover
-              spacing: 2, // 👈 adds spacing between arcs (clean look)
+              borderWidth: 0,
             },
           ],
         },
         options: {
-          cutout: "75%",
           responsive: true,
           maintainAspectRatio: false,
+          scales: {
+            r: {
+              display: false,
+              min: -maxVal,
+            },
+          },
           plugins: {
             legend: { display: false },
             tooltip: {
@@ -74,37 +77,33 @@ export default function DonutChart() {
   }, []);
 
   return (
-    <div className="bg-secondary rounded-xl py-4 px-auto border border-default flex justify-center items-center h-[273px]">
-      <div className="relative min-h-0 flex items-center justify-center">
-        <div className="w-full h-full max-h-[240px]">
-          <canvas ref={canvasRef} className="w-full h-full" />
+    <div className="bg-secondary rounded-xl py-6 px-4 md:px-8 border border-default flex flex-row justify-center gap-6 md:gap-[50px] items-center h-[273px]">
+      <div className="relative w-[158px] h-[158px] min-w-[158px] min-h-[158px] flex items-center justify-center shrink-0">
+        <div className="relative w-full h-full">
+          <canvas ref={canvasRef} width={158} height={158} className="w-full h-full" />
         </div>
 
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-          <span className="text-white text-2xl font-bold">{DONUT_TOTAL}%</span>
+          <div className="w-[78px] h-[78px] rounded-full bg-secondary flex items-center justify-center z-10">
+            <span className="text-white text-[28px] font-semibold">{DONUT_TOTAL}</span>
+          </div>
         </div>
       </div>
 
       {/* Legend */}
-      <div className="mt-6 flex flex-col gap-x-2 gap-y-3 overflow-hidden">
+      <div className="flex flex-col justify-center gap-y-4 min-w-[100px]">
         {DONUT_SEGMENTS.map((segment) => (
           <div
             key={segment.label}
-            className="flex items-center gap-2 min-w-[120px]"
+            className="flex items-center gap-3"
           >
             <div
               className="w-2.5 h-2.5 rounded-full"
               style={{ backgroundColor: segment.color }}
             />
-
-            <div className="flex items-center gap-1">
-              <span className="text-secondary text-xs">
-                {segment.label}
-              </span>
-              {/* <span className="text-white text-[13px] font-semibold">
-                {segment.value}%
-              </span> */}
-            </div>
+            <span className="text-[#8b909a] text-[13px]">
+              {segment.label}
+            </span>
           </div>
         ))}
       </div>

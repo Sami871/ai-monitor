@@ -1,4 +1,6 @@
-import Image from "next/image";
+"use client";
+
+import { useRef, useState } from "react";
 import type { SourceMetadata } from "@/types/Analysis";
 
 interface SourceMetadataPanelProps {
@@ -24,6 +26,21 @@ function MetaRow({ label, value }: MetaRowProps) {
 export default function SourceMetadataPanel({
   metadata,
 }: SourceMetadataPanelProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      video.play();
+      setIsPlaying(true);
+    } else {
+      video.pause();
+      setIsPlaying(false);
+    }
+  };
+
   return (
     <div className="bg-secondary rounded-xl p-5 flex flex-col gap-4 w-full">
       {/* Header */}
@@ -31,14 +48,55 @@ export default function SourceMetadataPanel({
 
       {/* Video thumbnail */}
       <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-[#1a1d23]">
-        {metadata.thumbnailUrl ? (
-          <Image
-            src={metadata.thumbnailUrl}
-            alt="Video thumbnail"
-            fill
-            className="object-cover"
-          />
+        {metadata.videoUrl ? (
+          <>
+            <video
+              ref={videoRef}
+              src={metadata.videoUrl}
+              className="w-full h-full object-cover"
+              onEnded={() => setIsPlaying(false)}
+              playsInline
+              preload="metadata"
+            />
+
+            {/* Play  Pause button */}
+            <button
+              onClick={togglePlay}
+              aria-label={isPlaying ? "Pause video" : "Play video"}
+              className="absolute inset-0 flex items-center justify-center group"
+            >
+              <span className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200" />
+
+              <span
+                className={`
+                  relative w-9 h-9 rounded-full flex items-center justify-center
+                  bg-black/50 backdrop-blur-sm
+                  transition-opacity duration-200
+                  ${isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"}
+                `}
+              >
+                {isPlaying ? (
+                  
+                  <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="6" y="4" width="4" height="16" rx="1" />
+                    <rect x="14" y="4" width="4" height="16" rx="1" />
+                  </svg>
+                ) : (
+                  
+                  <svg className="w-4 h-4 text-white ml-0.5" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5 3 19 12 5 21 5 3" />
+                  </svg>
+                )}
+              </span>
+            </button>
+
+           
+            <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-mono px-1.5 py-0.5 rounded pointer-events-none">
+              {metadata.duration}
+            </div>
+          </>
         ) : (
+          
           <div className="w-full h-full flex items-center justify-center">
             <svg
               className="w-10 h-10 text-[#3a3f4b]"
@@ -51,24 +109,6 @@ export default function SourceMetadataPanel({
             </svg>
           </div>
         )}
-
-        {/* Play overlay */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-8 h-8 rounded-full bg-black/50 flex items-center justify-center backdrop-blur-sm">
-            <svg
-              className="w-3.5 h-3.5 text-white ml-0.5"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <polygon points="5 3 19 12 5 21 5 3" />
-            </svg>
-          </div>
-        </div>
-
-        {/* Duration badge */}
-        <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-mono px-1.5 py-0.5 rounded">
-          {metadata.duration}
-        </div>
       </div>
 
       {/* Metadata rows */}

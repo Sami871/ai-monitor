@@ -4,6 +4,7 @@ const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
+    "ngrok-skip-browser-warning": "true",
   },
 });
 
@@ -15,8 +16,10 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-console.log("Axios initialized with baseURL:", process.env.NEXT_PUBLIC_API_BASE_URL);
-
+console.log(
+  "Axios initialized with baseURL:",
+  process.env.NEXT_PUBLIC_API_BASE_URL,
+);
 
 api.interceptors.response.use(
   (response) => response,

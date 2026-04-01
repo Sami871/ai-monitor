@@ -7,12 +7,31 @@ export type UploadStep =
 
 export interface SelectedFile {
   name: string;
-  size: number; // bytes
-  sizeFormatted: string; // e.g. "147.31 KB"
+  size: number;
+  sizeFormatted: string;
   file: File;
 }
 
 export interface UploadProgress {
   step: UploadStep;
-  percent: number; // 0-100
+  percent: number;
+}
+
+export interface AnalysisResult {
+  message: string;
+  filename: string;
+  metadata: {
+    file_size: string;
+    duration: string;
+    resolution: string;
+    fps: number;
+  };
+  summary: Array<{
+    type: string;
+    count: number;
+    avg_confidence: string;
+  }>;
+  counts: Record<string, number>;
+  cloudinary_url: string;
+  download_url: string;
 }

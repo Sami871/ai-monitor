@@ -3,6 +3,7 @@
 import { Download } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { DetectionRow } from "@/types/Analysis";
+import { useAnalysisStore } from "@/store/useAnalysisStore";
 
 interface AnalysisActionButtonsProps {
   detections?: DetectionRow[];
@@ -32,6 +33,7 @@ export default function AnalysisActionButtons({
   filename = "report",
 }: AnalysisActionButtonsProps) {
   const router = useRouter();
+  const clearResult = useAnalysisStore((s) => s.clearResult);
 
   const handleDownloadCSV = () => {
     const csv = buildCSV(detections, filename);
@@ -45,6 +47,7 @@ export default function AnalysisActionButtons({
   };
 
   const handleAnalyzeNew = () => {
+    clearResult();
     router.push("/analysis");
   };
 

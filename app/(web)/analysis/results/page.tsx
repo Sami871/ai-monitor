@@ -1,10 +1,29 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import StatCard from "@/components/web/StatCard";
 import DetailedReport from "../components/DetailedReport";
 import SourceMetadataPanel from "../components/SourcePanel";
+import { useAnalysisStore } from "@/store/useAnalysisStore";
+import { mapApiResultToUI } from "@/lib/mapApiResult";
 import { DUMMY_ANALYSIS_RESULT } from "@/data/analysis-data";
 
-export default function VideoAnalysisPage() {
-  const { stats, detections, metadata } = DUMMY_ANALYSIS_RESULT;
+export default function VideoAnalysisResultsPage() {
+  const router = useRouter();
+  const apiResult = useAnalysisStore((s) => s.result);
+
+  useEffect(() => {
+    if (!apiResult) {
+      router.replace("/analysis");
+    }
+  }, [apiResult, router]);
+
+  const { stats, detections, metadata } = apiResult
+    ? mapApiResultToUI(apiResult)
+    : DUMMY_ANALYSIS_RESULT;
+
+  if (!apiResult) return null;
 
   return (
     <div className="flex flex-col gap-4 h-full">
@@ -25,9 +44,13 @@ export default function VideoAnalysisPage() {
       </div>
 
       {/* Bottom Row */}
-      <div className="grid gap-4 grid-cols-1 lg:grid-cols-[67%_33%]">
-        <DetailedReport filename={metadata.filename} rows={detections} />
-        <SourceMetadataPanel metadata={metadata} />
+      <div className="flex gap-4 w-full">
+        <div className="w-2/3">
+          <DetailedReport filename={metadata.filename} rows={detections} />
+        </div>
+        <div className="w-1/3">
+          <SourceMetadataPanel metadata={metadata} />
+        </div>
       </div>
     </div>
   );

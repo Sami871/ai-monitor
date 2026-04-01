@@ -42,7 +42,7 @@ export const useAuthStore = create<AuthState>()(
         localStorage.setItem("access_token", token);
         document.cookie = `access_token=${token}; path=/; max-age=86400; SameSite=Lax`;
 
-        set({ token, isAuthenticated: true }); // ✅ removed user since backend doesn't return it
+        set({ token, isAuthenticated: true });
       },
 
       forgotPassword: async (data) => {
@@ -59,7 +59,6 @@ export const useAuthStore = create<AuthState>()(
         const res = await authApi.verifyOtp({ otp, email });
         console.log("Verify OTP response:", res);
 
-        // ✅ store OTP (NOT resetToken)
         set({ pendingOtp: otp });
       },
 
@@ -67,7 +66,7 @@ export const useAuthStore = create<AuthState>()(
         const email = get().pendingEmail;
         const otp = get().pendingOtp;
 
-        console.log("Reset password data:", { email, otp, password }); // ✅ add this
+        console.log("Reset password data:", { email, otp, password });
 
         if (!email) throw new Error("Session expired. Please try again.");
         if (!otp) throw new Error("OTP not found. Please verify again.");
@@ -85,7 +84,6 @@ export const useAuthStore = create<AuthState>()(
       logout: () => {
         localStorage.removeItem("access_token");
         localStorage.removeItem("otp");
-        // Remove cookie for middleware
         document.cookie = "access_token=; path=/; max-age=0";
         set({
           user: null,
