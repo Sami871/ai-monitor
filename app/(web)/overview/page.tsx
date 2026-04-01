@@ -1,24 +1,56 @@
+"use client";
+
+import { useEffect } from "react";
 import StatCard from "@/components/web/StatCard";
 import TrendChart from "./components/TrendChart";
 import RecentActivity from "./components/RecentActivity";
 import DonutChart from "./components/DonutChart";
 import {
-  DASHBOARD_STATS,
-  COMPACT_STATS,
+  DASHBOARD_STATS as STATIC_DASHBOARD_STATS,
+  COMPACT_STATS as STATIC_COMPACT_STATS,
   RECENT_ACTIVITY,
 } from "@/data/dashboard-data";
+import { useDashboardStore } from "@/store/useDashboardStore";
 
 export default function DashboardPage() {
+  const { stats, fetchStats } = useDashboardStore();
+
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
+
+  // Mapping logic for API data
+  const getCount = (id: string) => {
+    if (!stats) return 0;
+    const { lifetime } = stats;
+    const { breakdown } = lifetime;
+
+    switch (id) {
+      case "total":
+        return lifetime.total || 0;
+      case "humans":
+        return breakdown.person || 0;
+      case "vehicles":
+        return (breakdown.car || 0) + (breakdown.bicycle || 0) + (breakdown.truck || 0);
+      case "animals":
+        return breakdown.animal || 0;
+      case "birds":
+        return breakdown.bird || 0;
+      default:
+        return 0;
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4">
       {/* ── Row 1: Stat Cards ── */}
       <div className="grid grid-cols-4 gap-4 w-full">
         {/* First 3 equal cards */}
-        {DASHBOARD_STATS.map((stat) => (
+        {STATIC_DASHBOARD_STATS.map((stat) => (
           <StatCard
             key={stat.id}
             title={stat.title}
-            count={stat.count}
+            count={getCount(stat.id)}
             icon={stat.icon}
             iconColor={stat.iconColor}
             variant="dashboard"
@@ -29,11 +61,11 @@ export default function DashboardPage() {
 
         {/* Last column (stacked 2 cards) */}
         <div className="flex flex-col gap-4">
-          {COMPACT_STATS.map((stat) => (
+          {STATIC_COMPACT_STATS.map((stat) => (
             <StatCard
               key={stat.id}
               title={stat.title}
-              count={stat.count}
+              count={getCount(stat.id)}
               icon={stat.icon}
               iconColor={stat.iconColor}
               variant="dashboard"
