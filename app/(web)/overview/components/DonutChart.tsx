@@ -98,7 +98,7 @@ export default function DonutChart() {
             className="flex items-center gap-3"
           >
             <div
-              className="w-2.5 h-2.5 rounded-full"
+              className="w-1.5 h-1.5 rounded-full border border-white"
               style={{ backgroundColor: segment.color }}
             />
             <span className="text-[#8b909a] text-[13px]">

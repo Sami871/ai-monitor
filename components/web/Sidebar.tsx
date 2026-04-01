@@ -3,34 +3,26 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Monitor,
-  Upload,
-  LayoutDashboard,
-  ClipboardList,
-  Settings,
-  LogOut,
-} from "lucide-react";
 import Logo from "@/assets/image/ai-logo.png";
 import { cn } from "@/lib/utils";
 import { useProfileStore } from "@/store/useProfileStore";
 
 const NAV_ITEMS = [
-  { id: "live", label: "Live Monitoring", icon: Monitor, href: "/" },
-  { id: "analysis", label: "Video Analysis", icon: Upload, href: "/analysis" },
+  { id: "live", label: "Live Monitoring", icon: "/icons/live-monitoring.svg", href: "/" },
+  { id: "analysis", label: "Video Analysis", icon: "/icons/upload.svg", href: "/analysis" },
   {
     id: "dashboard",
     label: "Dashboard Overview",
-    icon: LayoutDashboard,
+    icon: "/icons/dashboard.svg",
     href: "/overview",
   },
   {
     id: "reports",
     label: "Reports & History",
-    icon: ClipboardList,
+    icon: "/icons/reports.svg",
     href: "/reports",
   },
-  { id: "settings", label: "Settings", icon: Settings, href: "/settings" },
+  { id: "settings", label: "Settings", icon: "/icons/settings.svg", href: "/settings" },
 ];
 
 interface SidebarProps {
@@ -55,7 +47,7 @@ export default function Sidebar({ onLogout }: SidebarProps) {
 
       {/* Navigation */}
       <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-        {NAV_ITEMS.map(({ id, label, icon: Icon, href }) => {
+        {NAV_ITEMS.map(({ id, label, icon, href }) => {
           const isActive =
             href === "/" ? pathname === "/" : pathname.startsWith(href);
           return (
@@ -69,7 +61,19 @@ export default function Sidebar({ onLogout }: SidebarProps) {
                   : "text-primary hover:text-white hover:bg-[#252830]",
               )}
             >
-              <Icon className="w-5 h-5 shrink-0" />
+              <span
+                className="w-5 h-5 shrink-0 bg-current"
+                style={{
+                  maskImage: `url(${icon})`,
+                  WebkitMaskImage: `url(${icon})`,
+                  maskSize: "contain",
+                  WebkitMaskSize: "contain",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskPosition: "center",
+                  WebkitMaskPosition: "center",
+                }}
+              />
               <span>{label}</span>
             </Link>
           );
@@ -83,7 +87,19 @@ export default function Sidebar({ onLogout }: SidebarProps) {
             onClick={onLogout}
             className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-[#ef4444] hover:bg-[#252830] transition-all duration-150"
           >
-            <LogOut className="w-5 h-5 shrink-0" />
+            <span
+              className="w-5 h-5 shrink-0 bg-current"
+              style={{
+                maskImage: `url(/icons/logout.svg)`,
+                WebkitMaskImage: `url(/icons/logout.svg)`,
+                maskSize: "contain",
+                WebkitMaskSize: "contain",
+                maskRepeat: "no-repeat",
+                WebkitMaskRepeat: "no-repeat",
+                maskPosition: "center",
+                WebkitMaskPosition: "center",
+              }}
+            />
             <span>Logout</span>
           </button>
         </div>
