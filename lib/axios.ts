@@ -16,11 +16,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-console.log(
-  "Axios initialized with baseURL:",
-  process.env.NEXT_PUBLIC_API_BASE_URL,
-);
-
 api.interceptors.response.use(
   (response) => response,
   (error) => {

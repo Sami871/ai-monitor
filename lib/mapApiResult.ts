@@ -22,7 +22,7 @@ const FIXED_CATEGORIES: CategoryDef[] = [
     title: "Humans Detected",
     icon: "human",
     iconColor: "text-[#22c55e]",
-    aliases: ["human", "person", "people", "pedestrian"],
+    aliases: ["human", "humans", "person", "people", "pedestrian"],
   },
   {
     id: "vehicles",
@@ -31,6 +31,7 @@ const FIXED_CATEGORIES: CategoryDef[] = [
     iconColor: "text-[#f59e0b]",
     aliases: [
       "vehicle",
+      "vehicles",
       "car",
       "truck",
       "bus",
@@ -49,6 +50,7 @@ const FIXED_CATEGORIES: CategoryDef[] = [
     iconColor: "text-[#ef4444]",
     aliases: [
       "animal",
+      "animals",
       "dog",
       "cat",
       "horse",

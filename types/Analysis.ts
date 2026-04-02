@@ -1,4 +1,4 @@
-export type DetectionType = "Human" | "Vehicle" | "Animal" | "Bird" | string;
+export type DetectionType = "Humans" | "Vehicle" | "Animal" | "Bird" | string;
 export type ConfidenceLevel = "High" | "Medium" | "Low";
 
 export interface StatCardData {
@@ -16,7 +16,7 @@ export interface DetectionRow {
   icon: "human" | "vehicle" | "animal" | "bird";
   iconColor: string;
   detectionCount: number;
-  avgConfidence: string; // e.g. "98.2%"
+  avgConfidence: string;
 }
 
 export interface SourceMetadata {
