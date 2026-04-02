@@ -21,7 +21,7 @@ interface AuthState {
   forgotPassword: (data: ForgotPasswordInput) => Promise<void>;
   verifyOtp: (otp: string) => Promise<void>;
   resetPassword: (password: string, confirmPassword: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -81,17 +81,24 @@ export const useAuthStore = create<AuthState>()(
         set({ pendingEmail: null, pendingOtp: null });
       },
 
-      logout: () => {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("otp");
-        document.cookie = "access_token=; path=/; max-age=0";
-        set({
-          user: null,
-          token: null,
-          isAuthenticated: false,
-          pendingEmail: null,
-          pendingOtp: null,
-        });
+      logout: async () => {
+        try {
+          await authApi.logout();
+        } catch (error) {
+          console.error("Logout API failed:", error);
+        } finally {
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("auth-storage");
+          localStorage.removeItem("profile-storage");
+          document.cookie = "access_token=; path=/; max-age=0";
+          set({
+            user: null,
+            token: null,
+            isAuthenticated: false,
+            pendingEmail: null,
+            pendingOtp: null,
+          });
+        }
       },
     }),
     {

@@ -6,11 +6,13 @@ import { Eye, EyeClosed } from "lucide-react";
 interface PasswordInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   placeholder?: string;
+  error?: string;
 }
 
 const PasswordInput: React.FC<PasswordInputProps> = ({
   label = "Password",
   placeholder = "Enter your password",
+  error,
   ...props
 }) => {
   const [show, setShow] = useState<boolean>(false);
@@ -42,6 +44,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
           )}
         </button>
       </div>
+      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
     </div>
   );
 };

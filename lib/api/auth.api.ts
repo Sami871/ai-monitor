@@ -1,5 +1,9 @@
 import api from "@/lib/axios";
-import { LoginInput, ForgotPasswordInput } from "@/lib/validations/auth.schema";
+import {
+  LoginInput,
+  ForgotPasswordInput,
+  ChangePasswordInput,
+} from "@/lib/validations/auth.schema";
 
 export const authApi = {
   login: async (data: LoginInput) => {
@@ -52,5 +56,24 @@ export const authApi = {
       headers: { "Content-Type": "multipart/form-data" },
     });
     return res.data;
+  },
+
+  getProfilePicture: async (): Promise<any> => {
+    const res = await api.get("/auth/get-profile-picture/");
+    return res.data;
+  },
+
+  updateProfile: async (data: { name: string }): Promise<any> => {
+    const res = await api.patch("/auth/update-profile/", data);
+    return res.data;
+  },
+
+  changePassword: async (data: ChangePasswordInput): Promise<any> => {
+    const res = await api.post("/auth/change-password/", data);
+    return res.data;
+  },
+
+  logout: async (): Promise<void> => {
+    await api.post("/auth/logout/");
   },
 };

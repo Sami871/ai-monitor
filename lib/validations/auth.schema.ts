@@ -39,7 +39,39 @@ export const resetPasswordSchema = z
     path: ["confirmPassword"],
   });
 
+export const changePasswordSchema = z
+  .object({
+    current_password: z.string().optional(),
+    new_password: z.string().optional(),
+    confirm_password: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      const hasAny =
+        data.current_password || data.new_password || data.confirm_password;
+      if (!hasAny) return true;
+
+      // If any is present, all must be valid
+      if (!data.current_password || data.current_password.length < 1)
+        return false;
+      if (
+        !data.new_password ||
+        data.new_password.length < 8 ||
+        !/[0-9]/.test(data.new_password)
+      )
+        return false;
+      if (data.new_password !== data.confirm_password) return false;
+
+      return true;
+    },
+    {
+      message: "Please complete all fields correctly to change your password",
+      path: ["new_password"],
+    },
+  );
+
 export type LoginInput = z.infer<typeof loginSchema>;
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 export type OtpInput = z.infer<typeof otpSchema>;
 export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
+export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;

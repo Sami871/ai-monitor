@@ -6,12 +6,17 @@ import { User, Pencil, Check, X } from "lucide-react";
 import Image from "next/image";
 import { useProfileStore } from "@/store/useProfileStore";
 
-const AvatarProfile = () => {
-  const { avatarUrl, name, email, setAvatar, setProfile } = useProfileStore();
+interface AvatarProfileProps {
+  displayName: string;
+  onNameChange: (newName: string) => void;
+}
+
+const AvatarProfile = ({ displayName, onNameChange }: AvatarProfileProps) => {
+  const { avatarUrl, email, setAvatar } = useProfileStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [editingName, setEditingName] = useState(false);
-  const [tempName, setTempName] = useState(name);
+  const [tempName, setTempName] = useState(displayName);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -20,7 +25,6 @@ const AvatarProfile = () => {
     try {
       await setAvatar(file);
     } catch (error) {
-      // Error is logged in the store, but we can add UI feedback here if needed
     } finally {
       e.target.value = "";
     }
@@ -29,12 +33,14 @@ const AvatarProfile = () => {
   const openFilePicker = () => fileInputRef.current?.click();
 
   const handleNameSave = () => {
-    if (tempName.trim()) setProfile({ name: tempName.trim() });
+    if (tempName.trim()) {
+      onNameChange(tempName.trim());
+    }
     setEditingName(false);
   };
 
   const handleNameCancel = () => {
-    setTempName(name);
+    setTempName(displayName);
     setEditingName(false);
   };
 
@@ -61,7 +67,6 @@ const AvatarProfile = () => {
             />
           )}
           <AvatarFallback className="bg-transparent">
-            {/* Standard img for fallback SVG to avoid Next.js Image hydration/src issues */}
             <img 
               src="/assets/icon/human.svg" 
               alt="Profile Default" 
@@ -83,7 +88,6 @@ const AvatarProfile = () => {
       </div>
 
       <div className="flex flex-col gap-1">
-        {/* Editable Name */}
         {editingName ? (
           <div className="flex items-center gap-1">
             <input
@@ -106,12 +110,12 @@ const AvatarProfile = () => {
         ) : (
           <button
             onClick={() => {
-              setTempName(name);
+              setTempName(displayName);
               setEditingName(true);
             }}
             className="flex items-center gap-1 group w-fit"
           >
-            <p className="font-medium text-primary">{name}</p>
+            <p className="font-medium text-primary">{displayName}</p>
             <Pencil
               size={10}
               className="text-secondary opacity-0 group-hover:opacity-100 transition-opacity"

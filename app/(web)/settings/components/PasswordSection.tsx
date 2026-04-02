@@ -1,25 +1,38 @@
 "use client";
 
+import { UseFormRegister, FieldErrors } from "react-hook-form";
 import PasswordInput from "@/components/PasswordInput";
+import { ChangePasswordInput } from "@/lib/validations/auth.schema";
 
-const PasswordSection = () => {
+interface PasswordSectionProps {
+  register: UseFormRegister<ChangePasswordInput>;
+  errors: FieldErrors<ChangePasswordInput>;
+}
+
+const PasswordSection = ({ register, errors }: PasswordSectionProps) => {
   return (
-    <form className="space-y-6 bg-secondary p-6 rounded-xl">
-      {/* Current Password */}
+    <div className="space-y-6 bg-secondary p-6 rounded-xl">
       <PasswordInput
         label="Current Password"
         placeholder="Enter Current password"
+        {...register("current_password")}
+        error={errors.current_password?.message}
       />
 
-      {/* New Password */}
-      <PasswordInput label="New Password" placeholder="Enter New password" />
+      <PasswordInput
+        label="New Password"
+        placeholder="Enter New password"
+        {...register("new_password")}
+        error={errors.new_password?.message}
+      />
 
-      {/* Confirm Password */}
       <PasswordInput
         label="Confirm Password"
         placeholder="Confirm New password"
+        {...register("confirm_password")}
+        error={errors.confirm_password?.message}
       />
-    </form>
+    </div>
   );
 };
 
