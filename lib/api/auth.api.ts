@@ -35,4 +35,22 @@ export const authApi = {
       throw error;
     }
   },
+
+  addProfilePicture: async (file: File): Promise<any> => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await api.post("/auth/add-profile-picture/", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return res.data;
+  },
+
+  updateProfilePicture: async (file: File): Promise<any> => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await api.put("/auth/update-profile-picture/", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return res.data;
+  },
 };

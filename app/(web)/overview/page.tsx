@@ -19,7 +19,6 @@ export default function DashboardPage() {
     fetchStats();
   }, [fetchStats]);
 
-  // Mapping logic for API data
   const getCount = (id: string) => {
     if (!stats) return 0;
     const { lifetime } = stats;
@@ -29,13 +28,15 @@ export default function DashboardPage() {
       case "total":
         return lifetime.total || 0;
       case "humans":
-        return breakdown.person || 0;
+        return (breakdown.humans || 0);
       case "vehicles":
-        return (breakdown.car || 0) + (breakdown.bicycle || 0) + (breakdown.truck || 0);
+        return (
+          (breakdown.vehicle || 0) 
+        );
       case "animals":
-        return breakdown.animal || 0;
+        return (breakdown.animals || 0);
       case "birds":
-        return breakdown.bird || 0;
+        return (breakdown.birds || 0);
       default:
         return 0;
     }
@@ -43,9 +44,8 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* ── Row 1: Stat Cards ── */}
+      {/*  overall stat cards */}
       <div className="grid grid-cols-4 gap-4 w-full">
-        {/* First 3 equal cards */}
         {STATIC_DASHBOARD_STATS.map((stat) => (
           <StatCard
             key={stat.id}
@@ -59,7 +59,6 @@ export default function DashboardPage() {
           />
         ))}
 
-        {/* Last column (stacked 2 cards) */}
         <div className="flex flex-col gap-4">
           {STATIC_COMPACT_STATS.map((stat) => (
             <StatCard
@@ -77,10 +76,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* ── Row 2: Trend Chart ── */}
+      {/*  Trend Chart */}
       <TrendChart />
 
-      {/* ── Row 3: Recent Activity + Donut ── */}
+      {/*  Recent Activity + Donut*/}
       <div className="flex gap-4 flex-col lg:flex-row w-full h-full">
         <div className="w-[65%]">
           <RecentActivity items={RECENT_ACTIVITY} />

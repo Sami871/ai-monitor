@@ -4,7 +4,6 @@ import { useRef, useState } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { User, Pencil, Check, X } from "lucide-react";
 import Image from "next/image";
-import profile from "@/assets/icon/human.svg";
 import { useProfileStore } from "@/store/useProfileStore";
 
 const AvatarProfile = () => {
@@ -14,13 +13,17 @@ const AvatarProfile = () => {
   const [editingName, setEditingName] = useState(false);
   const [tempName, setTempName] = useState(name);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => setAvatar(reader.result as string);
-    reader.readAsDataURL(file);
-    e.target.value = "";
+    
+    try {
+      await setAvatar(file);
+    } catch (error) {
+      // Error is logged in the store, but we can add UI feedback here if needed
+    } finally {
+      e.target.value = "";
+    }
   };
 
   const openFilePicker = () => fileInputRef.current?.click();
@@ -50,22 +53,21 @@ const AvatarProfile = () => {
           className="h-[60px] w-[60px] rounded-xl border-3 border-[#3B82F6] cursor-pointer overflow-hidden"
           onClick={openFilePicker}
         >
-          {avatarUrl ? (
-            <img
+          {avatarUrl && (
+            <AvatarImage
               src={avatarUrl}
               alt="Profile"
-              className="h-full w-full object-cover absolute inset-0"
+              className="h-full w-full object-cover"
             />
-          ) : (
-            <>
-              <AvatarImage asChild>
-                <Image src={profile} alt="Profile" className="rounded-xl" />
-              </AvatarImage>
-              <AvatarFallback>
-                <User className="h-6 w-6" />
-              </AvatarFallback>
-            </>
           )}
+          <AvatarFallback className="bg-transparent">
+            {/* Standard img for fallback SVG to avoid Next.js Image hydration/src issues */}
+            <img 
+              src="/assets/icon/human.svg" 
+              alt="Profile Default" 
+              className="rounded-xl w-full h-full object-cover" 
+            />
+          </AvatarFallback>
         </Avatar>
 
         <button

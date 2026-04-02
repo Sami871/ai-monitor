@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Logo from "@/assets/image/ai-logo.png";
+import Logo from "@/public/assets/image/ai-logo.png";
 
 export default function AuthLayout({
   children,
