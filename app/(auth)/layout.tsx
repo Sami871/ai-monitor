@@ -8,7 +8,6 @@ export default function AuthLayout({
 }) {
   return (
     <div className="min-h-screen w-full mx-auto flex flex-col">
-      {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-center px-0 md:px-5 pt-10">
         <div className="max-w-[204px] w-full mb-6">
           <Image src={Logo} alt="Logo" className="w-full mx-auto" priority />

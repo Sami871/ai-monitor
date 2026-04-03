@@ -14,6 +14,7 @@ export default function ResetPasswordPage() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<ResetPasswordInput>({
     resolver: zodResolver(resetPasswordSchema),
@@ -23,8 +24,10 @@ export default function ResetPasswordPage() {
     try {
       await resetPassword(data.password, data.confirmPassword);
       router.push("/login");
-    } catch (error) {
-      console.error("Password reset failed:", error);
+    } catch (error: any) {
+      const msg = error?.response?.data?.detail || error?.message || "Failed to reset password.";
+      setError("password", { type: "server", message: msg });
+      setError("confirmPassword", { type: "server", message: msg });
     }
   };
 

@@ -11,12 +11,17 @@ export default function Page() {
   const { forgotPassword } = useAuthStore();
   const router = useRouter();
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } =
+  const { register, handleSubmit, setError, formState: { errors, isSubmitting } } =
     useForm<ForgotPasswordInput>({ resolver: zodResolver(forgotPasswordSchema) });
 
   const onSubmit = async (data: ForgotPasswordInput) => {
-    await forgotPassword(data);
-    router.push("/verify-otp");
+    try {
+      await forgotPassword(data);
+      router.push("/verify-otp");
+    } catch (error: any) {
+      const msg = error?.response?.data?.detail || error?.message || "Failed to send reset link.";
+      setError("email", { type: "server", message: msg });
+    }
   };
 
   return (
