@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 import DetectionSettings from "./components/DetectionSettings";
+import BehaviourSettings from "./components/BehaviourSettings";
+import PersonCounterSettings from "./components/PersonCounterSettings";
 import CountingRules from "./components/CountingRules";
 import { useSettingsStore } from "@/store/useSettingsStore";
 
@@ -21,7 +23,7 @@ export default function SystemConfiguration() {
   }
 
   return (
-    <div className="flex flex-col gap-4 text-primary max-w-4xl">
+    <div className="flex flex-col gap-4 text-primary max-w-4xl pb-10">
       {error && (
         <div className="p-3 rounded-lg bg-red-500/10 text-red-500 text-sm border border-red-500/20">
           {error}
@@ -29,6 +31,8 @@ export default function SystemConfiguration() {
       )}
       
       <DetectionSettings />
+      <BehaviourSettings />
+      <PersonCounterSettings />
       <CountingRules />
     </div>
   );
