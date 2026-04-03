@@ -23,6 +23,7 @@ interface StatCardProps {
   count: number;
   icon: StatIconType;
   iconColor?: string;
+  customIcon?: React.ReactNode;
   variant: StatCardVariant;
   size?: StatCardSize;
   // dashboard variant
@@ -39,6 +40,7 @@ export default function StatCard({
   count,
   icon,
   iconColor,
+  customIcon,
   variant,
   size = "full",
   change,
@@ -55,7 +57,9 @@ export default function StatCard({
   const iconSrc = ICON_SRC[icon];
   const iconSizePx = 24;
 
-  const IconEl = iconSrc ? (
+  const IconEl = customIcon ? (
+    <div className={iconColor}>{customIcon}</div>
+  ) : iconSrc ? (
     <img src={iconSrc} alt={icon} width={iconSizePx} height={iconSizePx} />
   ) : (
     <Activity

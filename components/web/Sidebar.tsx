@@ -7,7 +7,7 @@ import Logo from "@/public/assets/image/ai-logo.png";
 import { cn } from "@/lib/utils";
 import { useProfileStore } from "@/store/useProfileStore";
 
-const NAV_ITEMS = [
+const NAV_ITEMS_LIVE = [
   { id: "live", label: "Live Monitoring", icon: "/icons/live-monitoring.svg", href: "/" },
   { id: "analysis", label: "Video Analysis", icon: "/icons/upload.svg", href: "/analysis" },
   {
@@ -24,6 +24,11 @@ const NAV_ITEMS = [
   },
   { id: "configuration", label: "System Configuration", icon: "/icons/configuration.svg", href: "/configuration" },
   { id: "settings", label: "Settings", icon: "/icons/settings.svg", href: "/settings" },
+];
+
+const NAV_ITEMS_OFFICE = [
+  { id: "behaviour", label: "Behaviour Detection", icon: "/icons/live-monitoring.svg", href: "/behaviour" },
+  { id: "persons", label: "Person Counter", icon: "/icons/human.svg", href: "/persons" },
 ];
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -49,38 +54,76 @@ export default function Sidebar({ onLogout }: SidebarProps) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-        {NAV_ITEMS.map(({ id, label, icon, href }) => {
-          const isActive =
-            href === "/" ? pathname === "/" : pathname.startsWith(href);
-          return (
-            <Link
-              key={id}
-              href={href}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150",
-                isActive
-                  ? "bg-blue text-white"
-                  : "text-primary hover:text-white hover:bg-[#252830]",
-              )}
-            >
-              <span
-                className="w-5 h-5 shrink-0 bg-current"
-                style={{
-                  maskImage: `url(${icon})`,
-                  WebkitMaskImage: `url(${icon})`,
-                  maskSize: "contain",
-                  WebkitMaskSize: "contain",
-                  maskRepeat: "no-repeat",
-                  WebkitMaskRepeat: "no-repeat",
-                  maskPosition: "center",
-                  WebkitMaskPosition: "center",
-                }}
-              />
-              <span>{label}</span>
-            </Link>
-          );
-        })}
+      <nav className="flex-1 px-3 py-4 space-y-5 overflow-y-auto">
+        <div className="space-y-1 border-b border-white/5 pb-4">
+          <h3 className="px-3 text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Live Monitoring</h3>
+          {NAV_ITEMS_LIVE.map(({ id, label, icon, href }) => {
+            const isActive =
+              href === "/" ? pathname === "/" : pathname.startsWith(href);
+            return (
+              <Link
+                key={id}
+                href={href}
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150",
+                  isActive
+                    ? "bg-blue text-white"
+                    : "text-primary hover:text-white hover:bg-[#252830]",
+                )}
+              >
+                <span
+                  className="w-5 h-5 shrink-0 bg-current"
+                  style={{
+                    maskImage: `url(${icon})`,
+                    WebkitMaskImage: `url(${icon})`,
+                    maskSize: "contain",
+                    WebkitMaskSize: "contain",
+                    maskRepeat: "no-repeat",
+                    WebkitMaskRepeat: "no-repeat",
+                    maskPosition: "center",
+                    WebkitMaskPosition: "center",
+                  }}
+                />
+                <span>{label}</span>
+              </Link>
+            );
+          })}
+        </div>
+
+        <div className="space-y-1">
+          <h3 className="px-3 text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Office Monitoring</h3>
+          {NAV_ITEMS_OFFICE.map(({ id, label, icon, href }) => {
+            const isActive =
+              href === "/" ? pathname === "/" : pathname.startsWith(href);
+            return (
+              <Link
+                key={id}
+                href={href}
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150",
+                  isActive
+                    ? "bg-blue text-white"
+                    : "text-primary hover:text-white hover:bg-[#252830]",
+                )}
+              >
+                <span
+                  className="w-5 h-5 shrink-0 bg-current"
+                  style={{
+                    maskImage: `url(${icon})`,
+                    WebkitMaskImage: `url(${icon})`,
+                    maskSize: "contain",
+                    WebkitMaskSize: "contain",
+                    maskRepeat: "no-repeat",
+                    WebkitMaskRepeat: "no-repeat",
+                    maskPosition: "center",
+                    WebkitMaskPosition: "center",
+                  }}
+                />
+                <span>{label}</span>
+              </Link>
+            );
+          })}
+        </div>
       </nav>
 
       {/* Bottom: Logout */}
