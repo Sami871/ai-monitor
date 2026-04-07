@@ -16,6 +16,8 @@ interface DropZoneProps {
   onStartAnalysis: () => void;
   fileInputRef: React.RefObject<HTMLInputElement | null>;
   onFileInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  title?: string;
+  subtitle?: string;
 }
 
 export default function DropZone({
@@ -31,6 +33,8 @@ export default function DropZone({
   onStartAnalysis,
   fileInputRef,
   onFileInputChange,
+  title = "Drag & Drop or Click to Upload",
+  subtitle = "Support for MP4, AVI, MOV formats. Max file size 500MB.",
 }: DropZoneProps) {
   const hasFile = !!selectedFile;
 
@@ -65,12 +69,8 @@ export default function DropZone({
 
       {/* Text */}
       <div className="flex flex-col items-center gap-2 text-center">
-        <h2 className="text-priamry text-lg font-semibold">
-          Drag &amp; Drop or Click to Upload
-        </h2>
-        <p className="text-[#8b909a] text-sm">
-          Support for MP4, AVI, MOV formats. Max file siz 500MB.
-        </p>
+        <h2 className="text-primary text-lg font-semibold">{title}</h2>
+        <p className="text-[#8b909a] text-sm">{subtitle}</p>
       </div>
 
       {/* Error */}

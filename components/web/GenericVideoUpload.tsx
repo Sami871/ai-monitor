@@ -1,10 +1,24 @@
 "use client";
 
-import { useVideoUpload } from "@/hooks/useVideoUpload";
+import { useGenericVideoUpload } from "@/hooks/useGenericVideoUpload";
 import DropZone from "./DropZone";
 import ProgressLoader from "./ProgressLoader";
 
-export default function VideoUploadFlow() {
+interface GenericVideoUploadProps {
+  apiCallback?: (file: File) => Promise<any>;
+  onSuccess?: (result?: any) => void;
+  redirectRoute?: string;
+  mockMode?: boolean;
+  dropZoneTitle?: string;
+}
+
+export default function GenericVideoUpload({
+  apiCallback,
+  onSuccess,
+  redirectRoute,
+  mockMode = false,
+  dropZoneTitle = "Drag & Drop or Click to Upload",
+}: GenericVideoUploadProps) {
   const {
     step,
     selectedFile,
@@ -19,9 +33,8 @@ export default function VideoUploadFlow() {
     onDrop,
     removeFile,
     startAnalysis,
-  } = useVideoUpload();
+  } = useGenericVideoUpload({ apiCallback, onSuccess, redirectRoute, mockMode });
 
-  // Show loader screens during upload/detection
   if (step === "uploading" || step === "detecting") {
     return (
       <div className="w-full">
@@ -30,7 +43,6 @@ export default function VideoUploadFlow() {
     );
   }
 
-  // Show drop zone for idle and file-selected states
   return (
     <div className="w-full mx-auto">
       <DropZone
@@ -46,6 +58,7 @@ export default function VideoUploadFlow() {
         onStartAnalysis={startAnalysis}
         fileInputRef={fileInputRef}
         onFileInputChange={onFileInputChange}
+        title={dropZoneTitle}
       />
     </div>
   );

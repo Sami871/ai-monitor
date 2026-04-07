@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import StatCard from "@/components/web/StatCard";
 import DetailedReport from "../components/DetailedReport";
-import SourceMetadataPanel from "../components/SourcePanel";
+import SourceMetadataPanel from "@/components/web/SourceMetadataPanel";
 import { useAnalysisStore } from "@/store/useAnalysisStore";
 import { mapApiResultToUI } from "@/lib/mapApiResult";
 import { DUMMY_ANALYSIS_RESULT } from "@/data/analysis-data";

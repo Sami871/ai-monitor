@@ -3,17 +3,13 @@
 import { useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import type { SelectedFile, UploadStep } from "@/types/upload";
-import { videoApi } from "@/lib/api/video.api";
-import { useAnalysisStore } from "@/store/useAnalysisStore";
 
-// Formats bytes into readable string
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 }
 
-// video types
 const ACCEPTED_TYPES = [
   "video/mp4",
   "video/avi",
@@ -22,10 +18,21 @@ const ACCEPTED_TYPES = [
 ];
 const MAX_SIZE_BYTES = 500 * 1024 * 1024;
 
-export function useVideoUpload() {
+interface UseGenericUploadProps {
+  apiCallback?: (file: File) => Promise<any>;
+  onSuccess?: (result?: any) => void;
+  redirectRoute?: string;
+  mockMode?: boolean;
+}
+
+export function useGenericVideoUpload({
+  apiCallback,
+  onSuccess,
+  redirectRoute,
+  mockMode = false,
+}: UseGenericUploadProps = {}) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const setResult = useAnalysisStore((s) => s.setResult);
 
   const [step, setStep] = useState<UploadStep>("idle");
   const [selectedFile, setSelectedFile] = useState<SelectedFile | null>(null);
@@ -33,7 +40,6 @@ export function useVideoUpload() {
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Validate and set file
   const processFile = useCallback((file: File) => {
     setError(null);
 
@@ -55,12 +61,10 @@ export function useVideoUpload() {
     setStep("file-selected");
   }, []);
 
-  // file picker
   const openFilePicker = useCallback(() => {
     fileInputRef.current?.click();
   }, []);
 
-  // file input change
   const onFileInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
@@ -130,10 +134,21 @@ export function useVideoUpload() {
     setProgress(0);
 
     try {
-      const result = await videoApi.processVideo(selectedFile.file);
-      setResult(result);
+      let result = null;
+      if (mockMode) {
+        // simulate API delay
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      } else if (apiCallback) {
+        result = await apiCallback(selectedFile.file);
+      }
+
       setStep("done");
-      router.push("/analysis/results");
+      if (onSuccess) {
+        onSuccess(result);
+      }
+      if (redirectRoute) {
+        router.push(redirectRoute);
+      }
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Something went wrong.";
@@ -141,7 +156,15 @@ export function useVideoUpload() {
       setStep("file-selected");
       setProgress(0);
     }
-  }, [selectedFile, animateProgress, setResult, router]);
+  }, [
+    selectedFile,
+    animateProgress,
+    apiCallback,
+    mockMode,
+    onSuccess,
+    redirectRoute,
+    router,
+  ]);
 
   return {
     step,

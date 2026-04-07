@@ -3,11 +3,12 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAnalysisStore } from "@/store/useAnalysisStore";
-import VideoUploadFlow from "./components/VideoUploadFlow";
+import GenericVideoUpload from "@/components/web/GenericVideoUpload";
+import { videoApi } from "@/lib/api/video.api";
 
 export default function VideoAnalysisPage() {
   const router = useRouter();
-  const result = useAnalysisStore((s) => s.result);
+  const { result, setResult } = useAnalysisStore();
 
   useEffect(() => {
     if (result) {
@@ -19,7 +20,12 @@ export default function VideoAnalysisPage() {
 
   return (
     <div className="flex justify-center w-full">
-      <VideoUploadFlow />
+      <GenericVideoUpload
+        dropZoneTitle="Upload Video for Analysis"
+        apiCallback={videoApi.processVideo}
+        onSuccess={setResult}
+        redirectRoute="/analysis/results"
+      />
     </div>
   );
 }

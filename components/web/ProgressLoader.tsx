@@ -17,9 +17,8 @@ const STEP_CONFIG: Record<
   },
   detecting: {
     label: "Running AI Detection",
-    title: "Running Object Detection",
-    subtitle:
-      "Our AI model is identifying and counting objects in your footage.",
+    title: "Running Model Analysis",
+    subtitle: "Our AI model is processing your footage.",
   },
 };
 
