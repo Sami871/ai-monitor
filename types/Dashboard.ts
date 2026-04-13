@@ -17,3 +17,12 @@ export interface DashboardStatsResponse {
   lifetime: DashboardStats;
   last_24h: DashboardStats;
 }
+
+export interface DashboardActivity {
+  id: string;
+  timestamp: string;
+  counts: Record<string, number>;
+  filename: string;
+  duration: string;
+  processing_time: number;
+}

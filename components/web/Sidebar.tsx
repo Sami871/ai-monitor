@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -39,7 +40,11 @@ interface SidebarProps {
 
 export default function Sidebar({ onLogout }: SidebarProps) {
   const pathname = usePathname();
-  const { avatarUrl, name, email } = useProfileStore();
+  const { avatarUrl, name, email, fetchCurrentUser } = useProfileStore();
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, [fetchCurrentUser]);
 
   return (
     <aside className="w-[240px] min-w-[240px] bg-secondary flex flex-col h-screen border-r border-default sticky top-0">

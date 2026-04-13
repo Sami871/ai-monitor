@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { DateRange } from "react-day-picker";
 import {
   format,
@@ -9,7 +9,8 @@ import {
   startOfDay,
   endOfDay,
 } from "date-fns";
-import { REPORTS_DATA, type DetectionRecord } from "@/data/reports-data";
+import { dashboardApi } from "@/lib/api/dashboard.api";
+import type { DashboardActivity } from "@/types/Dashboard";
 
 const PAGE_SIZE = 14;
 
@@ -19,10 +20,31 @@ export function useReports() {
   const [selectedObject, setSelectedObject] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [data, setData] = useState<DashboardActivity[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        // Using limit=100 so there's enough data for the table,
+        // while also matching the user's intent to use the new activity API
+        const res = await dashboardApi.getActivity(100);
+        setData(res);
+      } catch (err: any) {
+        console.error("Failed to fetch reports activity", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   // Apply filters
-  const filteredData = useMemo<DetectionRecord[]>(() => {
-    return REPORTS_DATA.filter((row) => {
-      const rowDate = parseISO(row.dateTime);
+  const filteredData = useMemo<DashboardActivity[]>(() => {
+    return data.filter((row) => {
+      if (!row.timestamp) return false;
+      const rowDate = parseISO(row.timestamp);
 
       // Date range filter
       if (dateRange?.from && dateRange?.to) {
@@ -34,18 +56,21 @@ export function useReports() {
       }
 
       // Camera filter
-      if (selectedCamera !== "all" && row.cameraName !== selectedCamera) {
+      if (selectedCamera !== "all" && row.filename !== selectedCamera) {
         return false;
       }
 
       // Object filter
-      if (selectedObject !== "all" && row.objectType !== selectedObject) {
-        return false;
+      if (selectedObject !== "all" && row.counts) {
+        const searchKey = selectedObject.toLowerCase();
+        // counts from API usually look like {"animals": 4, "humans": 1}
+        const hasObject = Object.keys(row.counts).some(k => k.toLowerCase().includes(searchKey));
+        if (!hasObject) return false;
       }
 
       return true;
     });
-  }, [dateRange, selectedCamera, selectedObject]);
+  }, [dateRange, selectedCamera, selectedObject, data]);
 
   // Pagination
   const totalPages = Math.max(1, Math.ceil(filteredData.length / PAGE_SIZE));
@@ -82,14 +107,18 @@ export function useReports() {
 
   // Build CSV string from filtered data
   const buildCSV = useCallback(
-    (data: DetectionRecord[]): string => {
-      const headers = ["Date & Time", "Camera Name", "Object Type", "Count"];
-      const rows = data.map((r) => [
-        formatDateTime(r.dateTime),
-        r.cameraName,
-        r.objectType,
-        r.count.toString(),
-      ]);
+    (records: DashboardActivity[]): string => {
+      const headers = ["Date & Time", "Camera Name", "Object Types", "Total Count"];
+      const rows = records.map((r) => {
+        const typesList = Object.keys(r.counts || {}).join(", ");
+        const totalCount = Object.values(r.counts || {}).reduce((sum, val) => sum + val, 0);
+        return [
+          formatDateTime(r.timestamp),
+          r.filename,
+          typesList,
+          totalCount.toString(),
+        ];
+      });
       return [headers, ...rows]
         .map((r) => r.map((c) => `"${c}"`).join(","))
         .join("\n");
@@ -127,6 +156,7 @@ export function useReports() {
 
   return {
     // State
+    isLoading,
     dateRange,
     selectedCamera,
     selectedObject,

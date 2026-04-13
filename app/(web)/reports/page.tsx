@@ -10,6 +10,7 @@ import { CAMERA_OPTIONS, OBJECT_OPTIONS } from "@/data/reports-data";
 
 export default function ReportsPage() {
   const {
+    isLoading,
     dateRange,
     currentPage,
     totalPages,
@@ -25,11 +26,8 @@ export default function ReportsPage() {
 
   return (
     <div className="flex flex-col gap-6 w-full">
-      {/* ── Toolbar ── */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
-        {/* Left: filters */}
         <div className="flex items-center gap-6 flex-wrap">
-          {/* Date range — uses your existing component, we wire onChange */}
           <DateRangePicker value={dateRange} onChange={handleDateRangeChange} />
 
           <Dropdown
@@ -45,16 +43,14 @@ export default function ReportsPage() {
           />
         </div>
 
-        {/* Right: export buttons */}
         <ExportButtons onExportCSV={exportCSV} onExportExcel={exportExcel} />
       </div>
 
-      {/* ── Table ── */}
       <div className="flex flex-col gap-6">
-        <div className="rounded-xl overflow-hidden">
-          <ReportsTable rows={paginatedData} formatDateTime={formatDateTime} />
+        <div className="rounded-xl">
+          <ReportsTable isLoading={isLoading} rows={paginatedData} formatDateTime={formatDateTime} />
         </div>
-        {/* ── Pagination ── */}
+
         <div className="">
           <ReportsPagination
             currentPage={currentPage}

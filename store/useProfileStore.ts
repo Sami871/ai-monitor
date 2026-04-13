@@ -9,6 +9,7 @@ interface ProfileState {
   setAvatar: (file: File) => Promise<void>;
   setProfile: (data: { name: string }) => Promise<void>;
   fetchProfilePicture: () => Promise<void>;
+  fetchCurrentUser: () => Promise<void>;
   logout: () => void;
 }
 
@@ -16,8 +17,8 @@ export const useProfileStore = create<ProfileState>()(
   persist(
     (set, get) => ({
       avatarUrl: null,
-      name: "Khan",
-      email: "abc@gmail.com",
+      name: "",
+      email: "",
 
       setAvatar: async (file: File) => {
         try {
@@ -96,6 +97,15 @@ export const useProfileStore = create<ProfileState>()(
           }
         } catch (error) {
           console.error("Failed to fetch profile picture:", error);
+        }
+      },
+
+      fetchCurrentUser: async () => {
+        try {
+          const res = await authApi.getCurrentUser();
+          set({ name: res.full_name || "", email: res.email || "" });
+        } catch (error) {
+          console.error("Failed to fetch current user:", error);
         }
       },
 

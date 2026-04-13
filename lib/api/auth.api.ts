@@ -63,6 +63,11 @@ export const authApi = {
     return res.data;
   },
 
+  getCurrentUser: async (): Promise<any> => {
+    const res = await api.get("/current-user");
+    return res.data;
+  },
+
   updateProfile: async (data: { name: string }): Promise<any> => {
     const res = await api.patch("/auth/update-profile/", data);
     return res.data;
