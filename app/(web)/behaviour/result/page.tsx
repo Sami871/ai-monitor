@@ -1,17 +1,32 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { RockingChair, PersonStanding, UsersRound } from "lucide-react";
 import StatCard from "@/components/web/StatCard";
 import SourceMetadataPanel from "@/components/web/SourceMetadataPanel";
+import { useBehaviourStore } from "@/store/useBehaviourStore";
+import BehaviourActionButtons from "../components/BehaviourActionButtons";
 
 export default function BehaviourResultPage() {
+  const router = useRouter();
+  const apiResult = useBehaviourStore((s) => s.result);
+
+  useEffect(() => {
+    if (!apiResult) {
+      router.replace("/behaviour");
+    }
+  }, [apiResult, router]);
+
+  if (!apiResult) return null;
+
   return (
     <div className="flex flex-col gap-6 h-full text-white">
       <div className="w-full flex flex-col gap-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 shrink-0">
           <StatCard
             title="Sitting"
-            count={12}
+            count={apiResult.counts.sitting}
             icon="activity"
             customIcon={<RockingChair className="w-6 h-6" />}
             iconColor="text-[#22c55e]"
@@ -19,15 +34,15 @@ export default function BehaviourResultPage() {
           />
           <StatCard
             title="Standing"
-            count={2}
+            count={apiResult.counts.standing}
             icon="activity"
             customIcon={<PersonStanding className="w-6 h-6" />}
             iconColor="text-[#f59e0b]"
             variant="dashboard"
           />
           <StatCard
-            title="Total"
-            count={15}
+            title="Total Persons"
+            count={apiResult.counts.person}
             icon="activity"
             customIcon={<UsersRound className="w-6 h-6" />}
             iconColor="text-[#ef4444]"
@@ -39,13 +54,14 @@ export default function BehaviourResultPage() {
       <div className="w-full">
         <SourceMetadataPanel 
           metadata={{
-            filename: "Behaviour_Analysis_Video.mp4",
-            fileSize: "124 MB",
-            duration: "00:45",
+            filename: apiResult.filename,
+            fileSize: apiResult.metadata.file_size || "Unknown",
+            duration: apiResult.metadata.duration,
             uploadDate: new Date().toLocaleDateString(),
-            videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4"
+            videoUrl: apiResult.cloudinary_url
           }} 
         />
+        <BehaviourActionButtons result={apiResult} />
       </div>
     </div>
   );

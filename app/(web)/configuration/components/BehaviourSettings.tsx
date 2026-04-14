@@ -6,10 +6,8 @@ import { useSettingsStore } from "@/store/useSettingsStore";
 import type { SystemSettings } from "@/types/Settings";
 
 const BEHAVIOUR_TYPES = [
-  { id: "behaviour_working", label: "Working" },
-  { id: "behaviour_sleepy", label: "Sleepy" },
-  { id: "behaviour_not_available", label: "Not Available" },
-  { id: "behaviour_phone", label: "Using Phone" },
+  { id: "behaviour_sitting", label: "Sitting" },
+  { id: "behaviour_standing", label: "Standing" },
 ] as const;
 
 export default function BehaviourSettings() {

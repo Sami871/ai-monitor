@@ -10,10 +10,8 @@ export interface SystemSettings {
   count_birds: boolean;
   counting_interval: number;
   // Behaviour detection
-  behaviour_working: boolean;
-  behaviour_sleepy: boolean;
-  behaviour_not_available: boolean;
-  behaviour_phone: boolean;
+  behaviour_sitting: boolean;
+  behaviour_standing: boolean;
   behaviour_sensitivity: number;
   // Person Counter configuration
   roi_direction: "inward_outward" | "inward" | "outward";

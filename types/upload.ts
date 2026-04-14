@@ -18,20 +18,29 @@ export interface UploadProgress {
 }
 
 export interface AnalysisResult {
-  message: string;
   filename: string;
   metadata: {
     file_size: string;
     duration: string;
-    resolution: string;
-    fps: number;
   };
   summary: Array<{
     type: string;
     count: number;
     avg_confidence: string;
   }>;
-  counts: Record<string, number>;
   cloudinary_url: string;
-  download_url: string;
+}
+
+export interface BehaviourResult {
+  filename: string;
+  metadata: {
+    duration: string;
+    file_size?: string;
+  };
+  counts: {
+    person: number;
+    sitting: number;
+    standing: number;
+  };
+  cloudinary_url: string;
 }

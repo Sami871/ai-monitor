@@ -20,10 +20,8 @@ const DEFAULT_SETTINGS: SystemSettings = {
   count_animals: false,
   count_birds: false,
   counting_interval: 5,
-  behaviour_working: true,
-  behaviour_sleepy: true,
-  behaviour_not_available: true,
-  behaviour_phone: true,
+  behaviour_sitting: true,
+  behaviour_standing: true,
   behaviour_sensitivity: 0.6,
   roi_direction: "inward_outward",
   roi_line_position: 50,
@@ -83,9 +81,9 @@ export default function SystemConfiguration() {
       )}
 
       <DetectionSettings />
+      <CountingRules />
       <BehaviourSettings />
       <PersonCounterSettings />
-      <CountingRules />
     </div>
   );
 }
