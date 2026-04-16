@@ -1,22 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { User, Pencil, Check, X } from "lucide-react";
-import Image from "next/image";
+import { Pencil } from "lucide-react";
 import { useProfileStore } from "@/store/useProfileStore";
 
-interface AvatarProfileProps {
-  displayName: string;
-  onNameChange: (newName: string) => void;
-}
-
-const AvatarProfile = ({ displayName, onNameChange }: AvatarProfileProps) => {
-  const { avatarUrl, email, setAvatar } = useProfileStore();
+const AvatarProfile = () => {
+  const { avatarUrl, email, name, setAvatar } = useProfileStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const [editingName, setEditingName] = useState(false);
-  const [tempName, setTempName] = useState(displayName);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -31,18 +22,6 @@ const AvatarProfile = ({ displayName, onNameChange }: AvatarProfileProps) => {
   };
 
   const openFilePicker = () => fileInputRef.current?.click();
-
-  const handleNameSave = () => {
-    if (tempName.trim()) {
-      onNameChange(tempName.trim());
-    }
-    setEditingName(false);
-  };
-
-  const handleNameCancel = () => {
-    setTempName(displayName);
-    setEditingName(false);
-  };
 
   return (
     <div className="flex items-center gap-4 p-4 bg-secondary rounded-xl">
@@ -88,41 +67,7 @@ const AvatarProfile = ({ displayName, onNameChange }: AvatarProfileProps) => {
       </div>
 
       <div className="flex flex-col gap-1">
-        {editingName ? (
-          <div className="flex items-center gap-1">
-            <input
-              autoFocus
-              value={tempName}
-              onChange={(e) => setTempName(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleNameSave();
-                if (e.key === "Escape") handleNameCancel();
-              }}
-              className="text-sm font-medium text-primary bg-transparent border-b border-blue outline-none w-28"
-            />
-            <button onClick={handleNameSave}>
-              <Check size={13} className="text-blue" />
-            </button>
-            <button onClick={handleNameCancel}>
-              <X size={13} className="text-red-400" />
-            </button>
-          </div>
-        ) : (
-          <button
-            onClick={() => {
-              setTempName(displayName);
-              setEditingName(true);
-            }}
-            className="flex items-center gap-1 group w-fit"
-          >
-            <p className="font-medium text-primary">{displayName}</p>
-            <Pencil
-              size={10}
-              className="text-secondary opacity-0 group-hover:opacity-100 transition-opacity"
-            />
-          </button>
-        )}
-
+        <p className="font-medium text-primary">{name}</p>
         <p className="text-sm text-secondary">{email}</p>
       </div>
     </div>

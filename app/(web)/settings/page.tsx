@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import AvatarProfile from "./components/AvatarProfile";
 import PasswordSection from "./components/PasswordSection";
 import { Button } from "@/components/ui/button";
-import { useProfileStore } from "@/store/useProfileStore";
 import { authApi } from "@/lib/api/auth.api";
 import {
   changePasswordSchema,
@@ -14,8 +13,6 @@ import {
 } from "@/lib/validations/auth.schema";
 
 export default function SettingsPage() {
-  const { name, setProfile } = useProfileStore();
-  const [displayName, setDisplayName] = useState(name);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{
     text: string;
@@ -40,9 +37,6 @@ export default function SettingsPage() {
     setLoading(true);
     setMessage(null);
     try {
-      if (displayName !== name) {
-        await setProfile({ name: displayName });
-      }
       if (data.current_password || data.new_password || data.confirm_password) {
         await authApi.changePassword(data);
         reset();
@@ -66,7 +60,7 @@ export default function SettingsPage() {
       className="w-full flex-col flex gap-6"
       style={{ maxWidth: "652px" }}
     >
-      <AvatarProfile displayName={displayName} onNameChange={setDisplayName} />
+      <AvatarProfile />
       <PasswordSection register={register} errors={errors} />
 
       {message && (

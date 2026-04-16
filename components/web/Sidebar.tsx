@@ -47,9 +47,9 @@ export default function Sidebar({ onLogout }: SidebarProps) {
   }, [fetchCurrentUser]);
 
   return (
-    <aside className="w-[240px] min-w-[240px] bg-secondary flex flex-col h-screen border-r border-default sticky top-0">
+    <aside className="w-[240px] min-w-[240px] bg-secondary flex flex-col h-screen border-r border-white/5 sticky top-0">
       {/* Logo */}
-      <div className="h-20 border-b border-default flex items-center justify-center">
+      <div className="h-20 border-b border-white/5 flex items-center justify-center">
         <Image
           src={Logo}
           alt="AI Monitor Logo"
@@ -59,7 +59,7 @@ export default function Sidebar({ onLogout }: SidebarProps) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-5 overflow-y-auto">
+      <nav className="flex-1 px-3 py-4 space-y-5 overflow-y-auto scrollbar-hide">
         <div className="space-y-1 border-b border-white/5 pb-4">
           <h3 className="px-3 text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Live Monitoring</h3>
           {NAV_ITEMS_LIVE.map(({ id, label, icon, href }) => {
@@ -161,7 +161,7 @@ export default function Sidebar({ onLogout }: SidebarProps) {
               <AvatarImage
                 src={avatarUrl}
                 alt="Profile"
-                className="object-cover"
+                className="object-cover rounded-full"
               />
             )}
             <AvatarFallback className="bg-transparent">

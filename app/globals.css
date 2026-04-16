@@ -18,7 +18,7 @@
   --color-text-secondary: #9CA3AF;
   --color-text-blue: #3B82F6;
   /* border colors */
-  --color-border-default: #1F2937;
+  --color-border-default: rgba(255, 255, 255, 0.05);
   --color-border-primary: #FFFFFF;
   
   /* Border radius */
@@ -41,6 +41,10 @@
   * {
     border-color: var(--color-border-default);
     outline-color: var(--color-bg-primary);
+  }
+
+  button {
+    cursor: pointer;
   }
 }
 
@@ -86,6 +90,16 @@
 
 .border-primary {
   border-color: var(--color-border-primary) !important;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }
 
 

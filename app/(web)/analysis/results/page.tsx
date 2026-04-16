@@ -7,7 +7,6 @@ import DetailedReport from "../components/DetailedReport";
 import SourceMetadataPanel from "@/components/web/SourceMetadataPanel";
 import { useAnalysisStore } from "@/store/useAnalysisStore";
 import { mapApiResultToUI } from "@/lib/mapApiResult";
-import { DUMMY_ANALYSIS_RESULT } from "@/data/analysis-data";
 
 export default function VideoAnalysisResultsPage() {
   const router = useRouter();
@@ -19,11 +18,7 @@ export default function VideoAnalysisResultsPage() {
     }
   }, [apiResult, router]);
 
-  const { stats, detections, metadata } = apiResult
-    ? mapApiResultToUI(apiResult)
-    : DUMMY_ANALYSIS_RESULT;
-
-  if (!apiResult) return null;
+  const { stats, detections, metadata } = mapApiResultToUI(apiResult!);
 
   return (
     <div className="flex flex-col gap-4 h-full">

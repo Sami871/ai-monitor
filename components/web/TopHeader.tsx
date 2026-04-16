@@ -38,7 +38,7 @@ export default function TopHeader() {
   const title = PAGE_TITLES[pathname] ?? "Dashboard";
 
   return (
-    <header className="h-20 bg-secondary border-b border-default flex items-center justify-between px-6 shrink-0 sticky top-0 z-10">
+    <header className="h-20 bg-secondary border-b border-white/5 flex items-center justify-between px-6 shrink-0 sticky top-0 z-10">
       <h1 className="text-primary text-xl font-medium">{title}</h1>
 
       <div className="flex items-center">
