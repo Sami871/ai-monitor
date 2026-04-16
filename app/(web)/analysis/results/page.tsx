@@ -18,6 +18,8 @@ export default function VideoAnalysisResultsPage() {
     }
   }, [apiResult, router]);
 
+  if (!apiResult) return null;
+
   const { stats, detections, metadata } = mapApiResultToUI(apiResult!);
 
   return (
