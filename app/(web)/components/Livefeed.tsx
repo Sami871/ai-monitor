@@ -20,11 +20,12 @@ export default function LiveFeed({
   onCameraChange,
 }: LiveFeedProps) {
   const [activeCamera, setActiveCamera] = useState(
-    selectedCameraId || cameras[0]?.id
+    selectedCameraId || cameras[0]?.id,
   );
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const currentCamera = cameras.find((c) => c.id === activeCamera) || cameras[0];
+  const currentCamera =
+    cameras.find((c) => c.id === activeCamera) || cameras[0];
 
   const handleCameraSelect = (cameraId: string) => {
     setActiveCamera(cameraId);
@@ -34,21 +35,17 @@ export default function LiveFeed({
 
   return (
     <div className="relative w-full h-full bg-white/50 rounded-xl overflow-hidden">
-      {/* Street image as dummy feed */}
       <img
         src="/dummy-feed.jpg"
         alt="Live camera feed"
         className="w-full h-full object-cover"
         onError={(e) => {
-          // Fallback gradient if image not found
           (e.target as HTMLImageElement).style.display = "none";
         }}
       />
 
-      {/* Dark overlay for image fallback */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#1a1d23]/40 via-transparent to-[#1a1d23]/20 pointer-events-none" />
 
-      {/* Bounding boxes overlay */}
       {boundingBoxes.map((box) => (
         <div
           key={box.id}
@@ -60,14 +57,12 @@ export default function LiveFeed({
             height: `${box.height}%`,
           }}
         >
-          {/* Label */}
           <div
             className="absolute -top-6 left-0 px-1.5 py-0.5 rounded text-[10px] font-semibold text-white whitespace-nowrap"
             style={{ backgroundColor: "rgba(0,0,0,0.75)" }}
           >
             {box.label} {box.confidence}%
           </div>
-          {/* Box */}
           <div
             className="w-full h-full rounded-sm"
             style={{
@@ -78,9 +73,7 @@ export default function LiveFeed({
         </div>
       ))}
 
-      {/* Top bar: Live indicator + Camera dropdown */}
       <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-        {/* Live badge + camera name */}
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2.5 bg-white/50 backdrop-blur-xl pr-2.5 pl-1.5 py-2 h-[33px] border border-white rounded-lg">
             <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
@@ -93,14 +86,18 @@ export default function LiveFeed({
           </div>
         </div>
 
-        {/* Camera selector dropdown */}
         <div className="relative">
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
             className="flex items-center gap-2.5 bg-white/50 backdrop-blur-xl pr-2.5 pl-1.5 py-2 h-[33px] border border-white rounded-lg text-white text-sm font-medium hover:bg-black/80 transition-colors"
           >
             <span>{currentCamera?.name}</span>
-            <ChevronDown className={cn("w-3 h-3 transition-transform", dropdownOpen && "rotate-180")} />
+            <ChevronDown
+              className={cn(
+                "w-3 h-3 transition-transform",
+                dropdownOpen && "rotate-180",
+              )}
+            />
           </button>
 
           {dropdownOpen && (
@@ -111,7 +108,9 @@ export default function LiveFeed({
                   onClick={() => handleCameraSelect(camera.id)}
                   className={cn(
                     "w-full text-left px-3 py-2 text-xs font-medium flex items-center justify-between gap-2 hover:bg-[#1a1d23] transition-colors",
-                    camera.id === activeCamera ? "text-white" : "text-[#8b909a]"
+                    camera.id === activeCamera
+                      ? "text-white"
+                      : "text-[#8b909a]",
                   )}
                 >
                   <span>{camera.name}</span>

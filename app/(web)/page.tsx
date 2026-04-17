@@ -1,24 +1,18 @@
-
 import LiveFeed from "./components/Livefeed";
 import RightPanel from "./components/Rightpanel";
 
 export default function LiveMonitoringPage() {
-
   return (
-        <>
-        {/* Content area */}
-        <main className="flex flex-1 gap-4 overflow-hidden min-h-0">
-          {/* Live feed - takes most of the space */}
-          <div className="flex-1 min-w-0 rounded-xl overflow-hidden">
-            <LiveFeed />
-          </div>
+    <>
+      <main className="flex flex-col lg:flex-row gap-6 lg:h-full lg:overflow-hidden">
+        <div className="w-full lg:flex-1 aspect-video lg:aspect-auto lg:h-full rounded-xl overflow-hidden shrink-0">
+          <LiveFeed />
+        </div>
 
-          {/* Right panel - fixed width */}
-          <div className="w-[421px] min-w-[421px] overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#3a3f4b]">
-            <RightPanel />
-          </div>
-        </main>
-        </>
-        
+        <div className="w-full lg:w-[421px] lg:h-full lg:overflow-y-auto scrollbar-thin scrollbar-track-transparent shrink-0">
+          <RightPanel />
+        </div>
+      </main>
+    </>
   );
 }
