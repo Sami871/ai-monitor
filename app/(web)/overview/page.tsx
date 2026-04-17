@@ -45,7 +45,7 @@ export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-4">
       {/*  overall stat cards */}
-      <div className="grid grid-cols-4 gap-4 w-full">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full ">
         {STATIC_DASHBOARD_STATS.map((stat) => (
           <StatCard
             key={stat.id}
@@ -81,11 +81,11 @@ export default function DashboardPage() {
 
       {/*  Recent Activity + Donut*/}
       <div className="flex gap-4 flex-col lg:flex-row w-full h-full">
-        <div className="w-[65%]">
+        <div className="w-full lg:w-[65%]">
           <RecentActivity items={RECENT_ACTIVITY} />
         </div>
 
-        <div className="w-[35%]">
+        <div className="w-full lg:w-[35%]">
           <DonutChart />
         </div>
       </div>

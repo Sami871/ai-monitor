@@ -77,7 +77,7 @@ export default function DonutChart() {
   }, []);
 
   return (
-    <div className="bg-secondary rounded-xl py-6 px-4 md:px-8 border border-default flex flex-row justify-center gap-6 md:gap-[50px] items-center h-[273px]">
+    <div className="bg-secondary rounded-xl py-6 px-4 md:px-8 border border-default flex flex-row justify-center gap-6 md:gap-8 xl:gap-[50px] items-center h-[273px]">
       <div className="relative w-[158px] h-[158px] min-w-[158px] min-h-[158px] flex items-center justify-center shrink-0">
         <div className="relative w-full h-full">
           <canvas ref={canvasRef} width={158} height={158} className="w-full h-full" />
