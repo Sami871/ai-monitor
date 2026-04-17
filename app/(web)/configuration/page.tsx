@@ -46,7 +46,10 @@ export default function SystemConfiguration() {
     return (
       <div className="flex flex-col gap-6 max-w-4xl w-full pb-10">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="animate-pulse flex flex-col gap-4 p-6 rounded-xl border border-default bg-[#151921]/50">
+          <div
+            key={i}
+            className="animate-pulse flex flex-col gap-4 p-6 rounded-xl border border-default bg-[#151921]/50"
+          >
             <div className="h-6 w-1/3 bg-secondary rounded-md"></div>
             <div className="space-y-3">
               <div className="h-10 w-full bg-secondary/50 rounded-lg"></div>
@@ -67,7 +70,8 @@ export default function SystemConfiguration() {
           <div className="flex-1 min-w-0">
             <p className="text-red-400 text-sm font-medium">Offline</p>
             <p className="text-red-400/70 text-xs mt-0.5">
-              Showing default values. Changes cannot be saved until the server is back online.
+              Showing default values. Changes cannot be saved until the server
+              is back online.
             </p>
           </div>
           <button
@@ -83,7 +87,6 @@ export default function SystemConfiguration() {
       <DetectionSettings />
       <CountingRules />
       <BehaviourSettings />
-      <PersonCounterSettings />
     </div>
   );
 }

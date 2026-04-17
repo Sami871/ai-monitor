@@ -20,12 +20,14 @@ export default function ReportsTable({
   rows,
   formatDateTime,
 }: ReportsTableProps) {
-  const [selectedRow, setSelectedRow] = useState<DashboardActivity | null>(null);
+  const [selectedRow, setSelectedRow] = useState<DashboardActivity | null>(
+    null,
+  );
 
   const closeModal = () => setSelectedRow(null);
 
   return (
-    <div className="w-full bg-secondary">
+    <div className="w-full bg-secondary rounded-xl">
       {/* Table header */}
       <div className="grid grid-cols-[40%_40%_20%] px-4 h-[45px] items-center">
         <span
@@ -69,7 +71,9 @@ export default function ReportsTable({
               >
                 {row.filename}
               </span>
-              <span className={`relative flex justify-start text-secondary text-sm ${COL_WIDTHS.objectDetails} ${selectedRow?.id === row.id ? 'z-[60]' : ''}`}>
+              <span
+                className={`relative flex justify-start text-secondary text-sm ${COL_WIDTHS.objectDetails} ${selectedRow?.id === row.id ? "z-[60]" : ""}`}
+              >
                 <button
                   onClick={() =>
                     setSelectedRow(selectedRow?.id === row.id ? null : row)
@@ -102,12 +106,24 @@ export default function ReportsTable({
                       {Object.entries(row.counts || {}).map(([type, count]) => {
                         const mapTypeToBadge = (t: string) => {
                           const lower = t.toLowerCase();
-                          if (lower.includes("person") || lower.includes("human")) return "Human";
-                          if (lower.includes("vehicle") || lower.includes("car") || lower.includes("truck")) return "Vehicle";
+                          if (
+                            lower.includes("person") ||
+                            lower.includes("human")
+                          )
+                            return "Human";
+                          if (
+                            lower.includes("vehicle") ||
+                            lower.includes("car") ||
+                            lower.includes("truck")
+                          )
+                            return "Vehicle";
                           if (lower.includes("animal")) return "Animal";
                           if (lower.includes("bird")) return "Bird";
                           // Fallback to capitalize and remove s, or just "Human"
-                          return t.charAt(0).toUpperCase() + t.slice(1).replace(/s$/, "");
+                          return (
+                            t.charAt(0).toUpperCase() +
+                            t.slice(1).replace(/s$/, "")
+                          );
                         };
 
                         return (
@@ -115,7 +131,9 @@ export default function ReportsTable({
                             key={type}
                             className="flex items-center justify-between"
                           >
-                            <ObjectTypeBadge type={mapTypeToBadge(type) as any} />
+                            <ObjectTypeBadge
+                              type={mapTypeToBadge(type) as any}
+                            />
                             <span className="text-white text-sm font-medium px-2">
                               {count as number}
                             </span>
@@ -130,8 +148,6 @@ export default function ReportsTable({
           ))}
         </div>
       )}
-
-
     </div>
   );
 }

@@ -6,7 +6,7 @@ import ExportButtons from "./components/Exportbuttons";
 import ReportsTable from "./components/ReportsTable";
 import ReportsPagination from "./components/Reportspagination";
 import { useReports } from "@/hooks/useReports";
-import { CAMERA_OPTIONS, OBJECT_OPTIONS } from "@/data/reports-data";
+import { OBJECT_OPTIONS } from "@/data/reports-data";
 
 export default function ReportsPage() {
   const {
@@ -16,7 +16,6 @@ export default function ReportsPage() {
     totalPages,
     paginatedData,
     handleDateRangeChange,
-    handleCameraChange,
     handleObjectChange,
     handlePageChange,
     formatDateTime,
@@ -31,12 +30,6 @@ export default function ReportsPage() {
           <DateRangePicker value={dateRange} onChange={handleDateRangeChange} />
 
           <Dropdown
-            label="All Cameras"
-            options={CAMERA_OPTIONS}
-            onChange={handleCameraChange}
-          />
-
-          <Dropdown
             label="All Objects"
             options={OBJECT_OPTIONS}
             onChange={handleObjectChange}
@@ -48,7 +41,11 @@ export default function ReportsPage() {
 
       <div className="flex flex-col gap-6">
         <div className="rounded-xl">
-          <ReportsTable isLoading={isLoading} rows={paginatedData} formatDateTime={formatDateTime} />
+          <ReportsTable
+            isLoading={isLoading}
+            rows={paginatedData}
+            formatDateTime={formatDateTime}
+          />
         </div>
 
         <div className="">
